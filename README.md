@@ -128,11 +128,12 @@ I’ve built an interactive web app to explore global flight crash data! 🚀
 ### 🔹 Project Preview
 Click to see screenshots from the app:
 
-![Preview 1](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview1.png)  
-![Preview 2](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview2.png)  
-![Preview 3](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview3.png)  
-![Preview 4](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview4.png)  
-![Preview 5](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview5.png)  
+![Preview 1](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview1.png)
+![Preview 2](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview2.png)
+![Preview 3](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview3.png)
+![Preview 4](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview4.png)
+![Preview 5](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview5.png)
+
 
 > Built with **Streamlit** for interactive maps, data visualization, and insights. Explore, analyze, and visualize flight crash data globally. 🌍📊
 
