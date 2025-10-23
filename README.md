@@ -119,6 +119,24 @@ The dashboard analyzes **historical aviation crash data** including:
 - **Data Points**: Date, Location, Operator, Aircraft Type, Casualties, Crash Summary
 - **Records**: 5,000+ aviation incidents
 
+## 🌟 Check Out My Live Project! 🌟
+
+I’ve built an interactive web app to explore global flight crash data! 🚀  
+
+**🔗 [Flight Crash Mapped](https://flightcrashmapped.streamlit.app/)**  
+
+### 🔹 Project Preview
+Click to see screenshots from the app:
+
+![Preview 1](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview1.png)  
+![Preview 2](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview2.png)  
+![Preview 3](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview3.png)  
+![Preview 4](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview4.png)  
+![Preview 5](https://raw.githubusercontent.com/vinaysingh282006/Flight-Crash-Analytics-/main/webpreview5.png)  
+
+> Built with **Streamlit** for interactive maps, data visualization, and insights. Explore, analyze, and visualize flight crash data globally. 🌍📊
+
+
 ### Data Fields
 - `Date`: Incident date
 - `Location`: Geographic location of crash
