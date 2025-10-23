@@ -132,7 +132,6 @@ Click to see screenshots from the app:
 ![Preview 2](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview2.png)
 ![Preview 3](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview3.png)
 ![Preview 4](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview4.png)
-![Preview 5](https://raw.githubusercontent.com/vinaysingh282006/History-of-all-flight-crash-map/main/webpreview5.png)
 
 
 > Built with **Streamlit** for interactive maps, data visualization, and insights. Explore, analyze, and visualize flight crash data globally. 🌍📊
