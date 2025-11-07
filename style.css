@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  display: flex;
+}
+
+#sidebar {
+  width: 310px;
+  background-color: #fafafa;
+  border-right: 1px solid #ddd;
+  padding: 15px;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+#map {
+  flex: 1;
+  height: 100vh;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.row {
+  display: flex;
+  gap: 5px;
+}
