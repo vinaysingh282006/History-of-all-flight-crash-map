@@ -110,11 +110,27 @@ def load_data():
     return df
 
 def create_interactive_3d_globe(df, selected_year):
-    """Interactive 3D Globe with clickable details"""
+    """Interactive 3D Globe with enhanced tooltips"""
     filtered_df = df[df['year'] == selected_year] if selected_year else df
     
     if len(filtered_df) == 0:
         return None
+    
+    # Create enhanced hover text with detailed information
+    hover_texts = []
+    for _, row in filtered_df.iterrows():
+        survival_rate = ((row['Aboard'] - row['Fatalities']) / row['Aboard'] * 100) if row['Aboard'] > 0 else 0
+        hover_text = (
+            f"<b>🛫 {row['Operator']}</b><br>"
+            f"<b>📅 Date:</b> {row['Date'].strftime('%B %d, %Y')}<br>"
+            f"<b>📍 Location:</b> {row['Location']}<br>"
+            f"<b>✈️ Aircraft:</b> {row['Type']}<br>"
+            f"<b>💀 Fatalities:</b> {int(row['Fatalities'])} / {int(row['Aboard'])} aboard<br>"
+            f"<b>📊 Survival Rate:</b> {survival_rate:.1f}%<br>"
+            f"<b>🌍 Ground Casualties:</b> {int(row['Ground'])}<br>"
+            f"<b>📝 Summary:</b> {row['Summary'][:100]}..."
+        )
+        hover_texts.append(hover_text)
     
     fig = go.Figure(go.Scattergeo(
         lon=filtered_df['longitude'], lat=filtered_df['latitude'], 
@@ -126,8 +142,7 @@ def create_interactive_3d_globe(df, selected_year):
             opacity=0.8, colorbar=dict(title="Fatalities"),
             line=dict(width=1, color='white')
         ),
-        text=[f"<b>{row['Operator']}</b><br>Date: {row['Date'].strftime('%Y-%m-%d')}<br>Location: {row['Location']}<br>Fatalities: {int(row['Fatalities'])}" 
-              for _, row in filtered_df.iterrows()],
+        text=hover_texts,
         hovertemplate="%{text}<extra></extra>"
     ))
     
@@ -139,7 +154,7 @@ def create_interactive_3d_globe(df, selected_year):
     return fig
 
 def create_racing_sticks_animation(df):
-    """ULTRA-SMOOTH Racing Animation with Purple and Blue Transparent Bars"""
+    """ULTRA-SMOOTH Racing Animation with enhanced tooltips"""
     
     # Prepare monthly data
     monthly_data = df.groupby(['year', 'month']).agg({
@@ -171,11 +186,26 @@ def create_racing_sticks_animation(df):
         # Purple bars for crashes (partially transparent)
         crash_data = [0] * 12
         fatality_data = [0] * 12
+        crash_hover = [""] * 12
+        fatality_hover = [""] * 12
         
         for _, row in year_data.iterrows():
             month_idx = int(row['month']) - 1
             crash_data[month_idx] = row['crashes']
             fatality_data[month_idx] = row['fatalities'] * scale_factor
+            
+            # Enhanced hover text
+            crash_hover[month_idx] = (
+                f"<b>📅 {row['month_name']} {end_year}</b><br>"
+                f"<b>✈️ Total Crashes:</b> {int(row['crashes'])}<br>"
+                f"<b>📊 Monthly Rank:</b> #{sorted(crash_data, reverse=True).index(row['crashes']) + 1 if row['crashes'] > 0 else 'N/A'}"
+            )
+            
+            fatality_hover[month_idx] = (
+                f"<b>📅 {row['month_name']} {end_year}</b><br>"
+                f"<b>💀 Total Fatalities:</b> {int(row['fatalities'])}<br>"
+                f"<b>📈 Avg per Crash:</b> {row['fatalities']/row['crashes']:.1f}" if row['crashes'] > 0 else ""
+            )
         
         frame = go.Frame(
             data=[
@@ -185,12 +215,14 @@ def create_racing_sticks_animation(df):
                     y=crash_data,
                     name='Crashes',
                     marker=dict(
-                        color='rgba(147, 112, 219, 0.7)',  # Purple with transparency
+                        color='rgba(147, 112, 219, 0.7)',
                         line=dict(color='rgba(147, 112, 219, 1)', width=2)
                     ),
                     text=[f"{int(val)}" if val > 0 else "" for val in crash_data],
                     textposition='outside',
                     textfont=dict(size=12, color='purple'),
+                    hovertext=crash_hover,
+                    hovertemplate="%{hovertext}<extra></extra>",
                     offsetgroup=1
                 ),
                 # Blue racing bars (fatalities scaled)
@@ -199,12 +231,14 @@ def create_racing_sticks_animation(df):
                     y=fatality_data,
                     name='Fatalities (scaled)',
                     marker=dict(
-                        color='rgba(70, 130, 180, 0.7)',  # Blue with transparency
+                        color='rgba(70, 130, 180, 0.7)',
                         line=dict(color='rgba(70, 130, 180, 1)', width=2)
                     ),
                     text=[f"{int(val/scale_factor)}" if val > 0 else "" for val in fatality_data],
                     textposition='outside',
                     textfont=dict(size=12, color='steelblue'),
+                    hovertext=fatality_hover,
+                    hovertemplate="%{hovertext}<extra></extra>",
                     offsetgroup=2
                 )
             ],
@@ -218,11 +252,25 @@ def create_racing_sticks_animation(df):
     
     initial_crashes = [0] * 12
     initial_fatalities = [0] * 12
+    initial_crash_hover = [""] * 12
+    initial_fatality_hover = [""] * 12
     
     for _, row in initial_data.iterrows():
         month_idx = int(row['month']) - 1
         initial_crashes[month_idx] = row['crashes']
         initial_fatalities[month_idx] = row['fatalities'] * scale_factor
+        
+        initial_crash_hover[month_idx] = (
+            f"<b>📅 {row['month_name']} {initial_year}</b><br>"
+            f"<b>✈️ Total Crashes:</b> {int(row['crashes'])}<br>"
+            f"<b>📊 Monthly Rank:</b> #{sorted(initial_crashes, reverse=True).index(row['crashes']) + 1 if row['crashes'] > 0 else 'N/A'}"
+        )
+        
+        initial_fatality_hover[month_idx] = (
+            f"<b>📅 {row['month_name']} {initial_year}</b><br>"
+            f"<b>💀 Total Fatalities:</b> {int(row['fatalities'])}<br>"
+            f"<b>📈 Avg per Crash:</b> {row['fatalities']/row['crashes']:.1f}" if row['crashes'] > 0 else ""
+        )
     
     # Add initial traces
     fig.add_trace(go.Bar(
@@ -236,6 +284,8 @@ def create_racing_sticks_animation(df):
         text=[f"{int(val)}" if val > 0 else "" for val in initial_crashes],
         textposition='outside',
         textfont=dict(size=12, color='purple'),
+        hovertext=initial_crash_hover,
+        hovertemplate="%{hovertext}<extra></extra>",
         offsetgroup=1
     ))
     
@@ -250,6 +300,8 @@ def create_racing_sticks_animation(df):
         text=[f"{int(val/scale_factor)}" if val > 0 else "" for val in initial_fatalities],
         textposition='outside',
         textfont=dict(size=12, color='steelblue'),
+        hovertext=initial_fatality_hover,
+        hovertemplate="%{hovertext}<extra></extra>",
         offsetgroup=2
     ))
     
@@ -362,7 +414,7 @@ def create_racing_sticks_animation(df):
     return fig
 
 def create_crash_reasons_chart(df, selected_years=None):
-    """Pie chart for crash reasons"""
+    """Pie chart for crash reasons with enhanced tooltips"""
     filtered_df = df
     if selected_years:
         filtered_df = df[df['year'].between(selected_years[0], selected_years[1])]
@@ -382,6 +434,17 @@ def create_crash_reasons_chart(df, selected_years=None):
             reasons.append('Other')
     
     reason_counts = pd.Series(reasons).value_counts()
+    total_crashes = len(reasons)
+    
+    # Enhanced hover text
+    hover_texts = [
+        f"<b>{reason}</b><br>"
+        f"<b>Count:</b> {count}<br>"
+        f"<b>Percentage:</b> {count/total_crashes*100:.1f}%<br>"
+        f"<b>Rank:</b> #{i+1} most common"
+        for i, (reason, count) in enumerate(reason_counts.items())
+    ]
+    
     colors = [COLORS['primary'], COLORS['secondary'], COLORS['accent'], 
              COLORS['success'], COLORS['warning'], COLORS['danger']]
     
@@ -389,7 +452,9 @@ def create_crash_reasons_chart(df, selected_years=None):
         labels=reason_counts.index, values=reason_counts.values,
         marker=dict(colors=colors[:len(reason_counts)]),
         textinfo='label+percent',
-        textfont=dict(size=16, color='black')
+        textfont=dict(size=16, color='black'),
+        hovertext=hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     year_text = f" ({selected_years[0]}-{selected_years[1]})" if selected_years else " (All Years)"
@@ -403,7 +468,7 @@ def create_crash_reasons_chart(df, selected_years=None):
     return fig
 
 def create_multi_colored_stick_chart(df, selected_years=None):
-    """Multi-colored stick chart for crash reasons by year"""
+    """Multi-colored stick chart with enhanced tooltips"""
     filtered_df = df
     if selected_years:
         filtered_df = df[df['year'].between(selected_years[0], selected_years[1])]
@@ -435,11 +500,11 @@ def create_multi_colored_stick_chart(df, selected_years=None):
     
     # Color mapping for each reason
     reason_colors = {
-        'Weather': '#4CAF50',      # Green
-        'Mechanical': '#FF9800',    # Orange  
-        'Human Error': '#F44336',   # Red
-        'Fire': '#9C27B0',         # Purple
-        'Other': '#607D8B'         # Blue Grey
+        'Weather': '#4CAF50',
+        'Mechanical': '#FF9800',
+        'Human Error': '#F44336',
+        'Fire': '#9C27B0',
+        'Other': '#607D8B'
     }
     
     # Add bars for each reason
@@ -451,6 +516,16 @@ def create_multi_colored_stick_chart(df, selected_years=None):
         
         y_values = [year_counts.get(year, 0) for year in years]
         
+        # Enhanced hover text
+        hover_texts = [
+            f"<b>📅 Year:</b> {year}<br>"
+            f"<b>🎯 Reason:</b> {reason}<br>"
+            f"<b>✈️ Crashes:</b> {val}<br>"
+            f"<b>📊 % of Year:</b> {val/sum([yearly_reasons[(yearly_reasons['year']==year)]['count'].sum()])*100:.1f}%"
+            if val > 0 else ""
+            for year, val in zip(years, y_values)
+        ]
+        
         fig.add_trace(go.Bar(
             x=years,
             y=y_values,
@@ -461,7 +536,9 @@ def create_multi_colored_stick_chart(df, selected_years=None):
             ),
             text=[str(val) if val > 0 else "" for val in y_values],
             textposition='outside',
-            textfont=dict(size=10, color=COLORS['text'])
+            textfont=dict(size=10, color=COLORS['text']),
+            hovertext=hover_texts,
+            hovertemplate="%{hovertext}<extra></extra>"
         ))
     
     year_text = f" ({selected_years[0]}-{selected_years[1]})" if selected_years else " (All Years)"
@@ -487,7 +564,7 @@ def create_multi_colored_stick_chart(df, selected_years=None):
     return fig
 
 def create_operator_crash_analysis(df, selected_years=None):
-    """Bar chart for top operators by crash count"""
+    """Bar chart with enhanced tooltips"""
     filtered_df = df
     if selected_years:
         filtered_df = df[df['year'].between(selected_years[0], selected_years[1])]
@@ -495,8 +572,29 @@ def create_operator_crash_analysis(df, selected_years=None):
     # Get top 15 operators by crash count
     operator_counts = filtered_df['Operator'].value_counts().head(15)
     
-    # Create color gradient
-    colors = px.colors.sequential.Viridis[::-1]  # Reverse for better visual
+    # Calculate additional stats for tooltips
+    operator_stats = []
+    for operator in operator_counts.index:
+        op_data = filtered_df[filtered_df['Operator'] == operator]
+        total_fatalities = int(op_data['Fatalities'].sum())
+        avg_fatalities = total_fatalities / len(op_data) if len(op_data) > 0 else 0
+        
+        operator_stats.append({
+            'operator': operator,
+            'crashes': len(op_data),
+            'fatalities': total_fatalities,
+            'avg_fatalities': avg_fatalities
+        })
+    
+    # Enhanced hover text
+    hover_texts = [
+        f"<b>✈️ {stat['operator']}</b><br>"
+        f"<b>Total Crashes:</b> {stat['crashes']}<br>"
+        f"<b>Total Fatalities:</b> {stat['fatalities']:,}<br>"
+        f"<b>Avg Fatalities/Crash:</b> {stat['avg_fatalities']:.1f}<br>"
+        f"<b>Rank:</b> #{i+1} most crashes"
+        for i, stat in enumerate(operator_stats)
+    ]
     
     fig = go.Figure(go.Bar(
         x=operator_counts.index,
@@ -508,7 +606,9 @@ def create_operator_crash_analysis(df, selected_years=None):
         ),
         text=[f"{count}" for count in operator_counts.values],
         textposition='outside',
-        textfont=dict(size=12, color=COLORS['text'])
+        textfont=dict(size=12, color=COLORS['text']),
+        hovertext=hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     year_text = f" ({selected_years[0]}-{selected_years[1]})" if selected_years else " (All Years)"
@@ -526,13 +626,34 @@ def create_operator_crash_analysis(df, selected_years=None):
     return fig
 
 def create_aircraft_type_analysis(df, selected_years=None):
-    """Horizontal bar chart for aircraft types"""
+    """Horizontal bar chart with enhanced tooltips"""
     filtered_df = df
     if selected_years:
         filtered_df = df[df['year'].between(selected_years[0], selected_years[1])]
     
     # Get top 12 aircraft types
     aircraft_counts = filtered_df['Type'].value_counts().head(12)
+    
+    # Calculate additional stats
+    aircraft_stats = []
+    for aircraft in aircraft_counts.index:
+        ac_data = filtered_df[filtered_df['Type'] == aircraft]
+        total_fatalities = int(ac_data['Fatalities'].sum())
+        
+        aircraft_stats.append({
+            'type': aircraft,
+            'crashes': len(ac_data),
+            'fatalities': total_fatalities
+        })
+    
+    # Enhanced hover text
+    hover_texts = [
+        f"<b>🛩️ {stat['type']}</b><br>"
+        f"<b>Total Crashes:</b> {stat['crashes']}<br>"
+        f"<b>Total Fatalities:</b> {stat['fatalities']:,}<br>"
+        f"<b>Safety Rank:</b> #{i+1} most crashes"
+        for i, stat in enumerate(aircraft_stats)
+    ]
     
     fig = go.Figure(go.Bar(
         x=aircraft_counts.values,
@@ -545,7 +666,9 @@ def create_aircraft_type_analysis(df, selected_years=None):
         ),
         text=[f"{count}" for count in aircraft_counts.values],
         textposition='outside',
-        textfont=dict(size=12, color=COLORS['text'])
+        textfont=dict(size=12, color=COLORS['text']),
+        hovertext=hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     year_text = f" ({selected_years[0]}-{selected_years[1]})" if selected_years else " (All Years)"
@@ -562,7 +685,7 @@ def create_aircraft_type_analysis(df, selected_years=None):
     return fig
 
 def create_monthly_crash_pattern(df, selected_years=None):
-    """Line chart showing crash patterns by month"""
+    """Line chart with enhanced tooltips"""
     filtered_df = df
     if selected_years:
         filtered_df = df[df['year'].between(selected_years[0], selected_years[1])]
@@ -571,6 +694,20 @@ def create_monthly_crash_pattern(df, selected_years=None):
     monthly_crashes = filtered_df.groupby('month_name').size().reindex(
         ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     ).fillna(0)
+    
+    # Calculate fatalities per month
+    monthly_fatalities = filtered_df.groupby('month_name')['Fatalities'].sum().reindex(
+        ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    ).fillna(0)
+    
+    # Enhanced hover text
+    hover_texts = [
+        f"<b>📅 Month:</b> {month}<br>"
+        f"<b>✈️ Total Crashes:</b> {int(crashes)}<br>"
+        f"<b>💀 Total Fatalities:</b> {int(monthly_fatalities[month])}<br>"
+        f"<b>📊 Avg Fatalities/Crash:</b> {monthly_fatalities[month]/crashes:.1f}" if crashes > 0 else f"<b>📅 Month:</b> {month}<br><b>No crashes</b>"
+        for month, crashes in monthly_crashes.items()
+    ]
     
     fig = go.Figure()
     
@@ -586,7 +723,9 @@ def create_monthly_crash_pattern(df, selected_years=None):
             color=COLORS['accent'],
             line=dict(color='white', width=2)
         ),
-        name='Crashes'
+        name='Crashes',
+        hovertext=hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     year_text = f" ({selected_years[0]}-{selected_years[1]})" if selected_years else " (All Years)"
@@ -604,7 +743,7 @@ def create_monthly_crash_pattern(df, selected_years=None):
     return fig
 
 def create_fatality_trends_chart(df, selected_years=None):
-    """Line chart for fatality trends"""
+    """Line chart with enhanced tooltips"""
     filtered_df = df
     if selected_years:
         filtered_df = df[df['year'].between(selected_years[0], selected_years[1])]
@@ -615,6 +754,15 @@ def create_fatality_trends_chart(df, selected_years=None):
     }).reset_index()
     yearly_data.columns = ['year', 'total_fatalities', 'total_crashes']
     
+    # Enhanced hover text
+    hover_texts = [
+        f"<b>📅 Year:</b> {int(row['year'])}<br>"
+        f"<b>💀 Total Fatalities:</b> {int(row['total_fatalities']):,}<br>"
+        f"<b>✈️ Total Crashes:</b> {int(row['total_crashes'])}<br>"
+        f"<b>📊 Avg Fatalities/Crash:</b> {row['total_fatalities']/row['total_crashes']:.1f}"
+        for _, row in yearly_data.iterrows()
+    ]
+    
     fig = go.Figure()
     
     # Fatalities area chart
@@ -623,7 +771,9 @@ def create_fatality_trends_chart(df, selected_years=None):
         mode='lines+markers', fill='tonexty',
         line=dict(color=COLORS['danger'], width=4),
         marker=dict(size=10, color=COLORS['accent']),
-        name='Total Fatalities'
+        name='Total Fatalities',
+        hovertext=hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     year_text = f" ({selected_years[0]}-{selected_years[1]})" if selected_years else " (All Years)"
@@ -637,7 +787,7 @@ def create_fatality_trends_chart(df, selected_years=None):
     return fig
 
 def create_cost_analysis(df, selected_year=None):
-    """Cost analysis with proper styling"""
+    """Cost analysis with enhanced tooltips"""
     filtered_df = df if selected_year is None else df[df['year'] == selected_year]
     
     if len(filtered_df) == 0:
@@ -659,6 +809,18 @@ def create_cost_analysis(df, selected_year=None):
         (airline_stats['Crashes'] >= 2)
     ].nlargest(12, 'Cost_Millions')
     
+    # Enhanced hover text for cost chart
+    cost_hover_texts = [
+        f"<b>✈️ {row['Airline']}</b><br>"
+        f"<b>💰 Total Cost:</b> ${row['Cost_Millions']:.0f}M<br>"
+        f"<b>✈️ Crashes:</b> {int(row['Crashes'])}<br>"
+        f"<b>💀 Fatalities:</b> {int(row['Fatalities'])}<br>"
+        f"<b>📊 Cost Breakdown:</b><br>"
+        f"  - Crash costs: ${row['Crashes']*50:.0f}M<br>"
+        f"  - Fatality costs: ${row['Fatalities']*1.5:.0f}M"
+        for _, row in airline_stats[:8].iterrows()
+    ]
+    
     # Cost breakdown chart
     cost_fig = go.Figure(go.Bar(
         x=airline_stats['Airline'][:8],
@@ -670,7 +832,9 @@ def create_cost_analysis(df, selected_year=None):
         ),
         text=[f"${cost:.0f}M" for cost in airline_stats['Cost_Millions'][:8]],
         textposition='outside',
-        textfont=dict(size=12, color=COLORS['text'])
+        textfont=dict(size=12, color=COLORS['text']),
+        hovertext=cost_hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     cost_fig.update_layout(
@@ -680,6 +844,16 @@ def create_cost_analysis(df, selected_year=None):
         font=dict(color=COLORS['text'], size=14),
         xaxis=dict(tickangle=45)
     )
+    
+    # Enhanced hover text for risk chart
+    risk_hover_texts = [
+        f"<b>✈️ {row['Airline']}</b><br>"
+        f"<b>✈️ Crashes:</b> {int(row['Crashes'])}<br>"
+        f"<b>📊 Fatality Rate:</b> {row['Fatality_Rate']:.1f}%<br>"
+        f"<b>💀 Fatalities:</b> {int(row['Fatalities'])} / {int(row['Aboard'])} aboard<br>"
+        f"<b>💰 Total Cost:</b> ${row['Cost_Millions']:.0f}M"
+        for _, row in airline_stats[:10].iterrows()
+    ]
     
     # Risk analysis scatter
     risk_fig = go.Figure(go.Scatter(
@@ -695,7 +869,9 @@ def create_cost_analysis(df, selected_year=None):
         ),
         text=airline_stats['Airline'][:10],
         textposition="middle center",
-        textfont=dict(size=10)
+        textfont=dict(size=10),
+        hovertext=risk_hover_texts,
+        hovertemplate="%{hovertext}<extra></extra>"
     ))
     
     risk_fig.update_layout(
@@ -781,6 +957,7 @@ def main():
         - **Ultra-Smooth Animation**: Racing bars that go up and down smoothly
         - **Speed Controls**: Fast, Normal, Slow racing speeds
         - **Interactive**: Play, pause, and navigate by year
+        - **Enhanced Tooltips**: Hover for detailed monthly statistics
         """)
         
         # Create the racing animation
