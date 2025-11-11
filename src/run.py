@@ -28,7 +28,7 @@ def install_dependencies():
 
 def check_dataset():
     """Check if dataset file exists"""
-    if not os.path.exists("dataset.csv.csv"):
+    if not os.path.exists("data\dataset.csv.csv"):
         print("❌ Error: dataset.csv.csv not found")
         print("Please ensure the dataset file is in the project directory")
         sys.exit(1)
