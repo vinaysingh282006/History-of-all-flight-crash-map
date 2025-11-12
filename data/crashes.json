@@ -1,0 +1,29 @@
+[
+  {
+    "Location": "New Delhi, India",
+    "Year": 2010,
+    "Type": "Commercial",
+    "Fatalities": 152,
+    "Country": "India",
+    "Latitude": 28.6139,
+    "Longitude": 77.209
+  },
+  {
+    "Location": "Los Angeles, USA",
+    "Year": 2001,
+    "Type": "Cargo",
+    "Fatalities": 3,
+    "Country": "USA",
+    "Latitude": 34.0522,
+    "Longitude": -118.2437
+  },
+  {
+    "Location": "London, UK",
+    "Year": 1986,
+    "Type": "Commercial",
+    "Fatalities": 45,
+    "Country": "UK",
+    "Latitude": 51.5072,
+    "Longitude": -0.1276
+  }
+]

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flight Crash Map – Filters & Analytics</title>
+    <link rel="stylesheet" href="web\style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+  </head>
+  <body>
+    <div id="sidebar">
+      <h2>Crash Filters</h2>
+
+      <label>Year Range</label>
+      <div class="row">
+        <input type="number" id="yearMin" placeholder="From" />
+        <input type="number" id="yearMax" placeholder="To" />
+      </div>
+
+      <label>Aircraft Type</label>
+      <select id="typeFilter">
+        <option value="All">All</option>
+        <option value="Commercial">Commercial</option>
+        <option value="Cargo">Cargo</option>
+        <option value="Private">Private</option>
+        <option value="Military">Military</option>
+      </select>
+
+      <label>Country / Region</label>
+      <input type="text" id="regionFilter" placeholder="e.g. India" />
+
+      <label>Min Fatalities</label>
+      <input type="number" id="fatalFilter" placeholder="≥ fatalities" />
+
+      <button id="applyFilter">Apply Filters</button>
+
+      <hr />
+
+      <h3>Analytics</h3>
+      <div id="stats">
+        <p>Total Crashes: <span id="count"></span></p>
+        <p>Total Fatalities: <span id="fatalities"></span></p>
+        <p>Average Fatalities: <span id="avg"></span></p>
+      </div>
+
+      <canvas id="chart" width="200" height="200"></canvas>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="src\script.js"></script>
+  </body>
+</html>
