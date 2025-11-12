@@ -1,0 +1,7 @@
+[
+  { "q": "Is FreeSkillz really free?", "a": "Yes, all courses are 100% free to access." },
+  { "q": "Do I get a certificate?", "a": "Yes, you can download your certificate after completing a course." },
+  { "q": "Do I need to create an account?", "a": "No, you can enroll in courses without creating an account. Your data is stored locally in your browser." },
+  { "q": "What kind of courses are offered?", "a": "We offer courses in Web Development, Programming, Design, and more. All courses are curated from high-quality free resources." },
+  { "q": "Can I access courses offline?", "a": "Courses that are videos can be downloaded for offline viewing. Document-based courses require internet access." }
+]
