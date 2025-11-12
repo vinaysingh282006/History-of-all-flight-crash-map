@@ -62,9 +62,9 @@ st.markdown("""
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('dataset.csv.csv', encoding="utf-8")
+        df = pd.read_csv('data\dataset.csv.csv', encoding="utf-8")
     except:
-        df = pd.read_csv('dataset.csv.csv', encoding="latin1")
+        df = pd.read_csv('data\dataset.csv.csv', encoding="latin1")
     
     df.columns = [c.strip() for c in df.columns]
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
