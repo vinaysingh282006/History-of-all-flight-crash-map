@@ -1,0 +1,26 @@
+[
+  {
+    "id": "webdev",
+    "title": "Full Stack Web Development",
+    "description": "Learn HTML, CSS, JavaScript, and backend basics to build complete websites.",
+    "image": "assets/img/webdev.jpg",
+    "category": "Web Development",
+    "level": "Beginner"
+  },
+  {
+    "id": "python",
+    "title": "Python for Everyone",
+    "description": "Master Python programming from basics to data handling.",
+    "image": "assets/img/python.jpg",
+    "category": "Programming",
+    "level": "Beginner"
+  },
+  {
+    "id": "design",
+    "title": "UI/UX Design Fundamentals",
+    "description": "Learn design principles and create stunning user interfaces.",
+    "image": "assets/img/design.jpg",
+    "category": "Design",
+    "level": "Beginner"
+    }
+]

@@ -1,58 +1,716 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flight Crash Map – Filters & Analytics</title>
-    <link rel="stylesheet" href="web\style.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-  </head>
-  <body>
-    <div id="sidebar">
-      <h2>Crash Filters</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeSkillz - Learn premium skills for free</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
 
-      <label>Year Range</label>
-      <div class="row">
-        <input type="number" id="yearMin" placeholder="From" />
-        <input type="number" id="yearMax" placeholder="To" />
-      </div>
 
-      <label>Aircraft Type</label>
-      <select id="typeFilter">
-        <option value="All">All</option>
-        <option value="Commercial">Commercial</option>
-        <option value="Cargo">Cargo</option>
-        <option value="Private">Private</option>
-        <option value="Military">Military</option>
-      </select>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title animate-fade-in">Learn premium skills for free</h1>
+            <p class="hero-subtext animate-fade-in">Access curated courses and start learning instantly with our expert-led content</p>
+            <div class="hero-buttons animate-fade-in">
+                <button class="btn btn-primary" onclick="scrollToExplore()">Explore Courses</button>
+                <button class="btn btn-secondary" onclick="window.location.href='#contact'">Get Started</button>
+            </div>
+            <div class="hero-stats animate-fade-in">
+                <div class="stat">
+                    <span class="stat-number">10M+</span>
+                    <span class="stat-label">Students taught</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">4M</span>
+                    <span class="stat-label">Active learners</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Courses available</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Satisfaction rate</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <label>Country / Region</label>
-      <input type="text" id="regionFilter" placeholder="e.g. India" />
+    <!-- Explore Section -->
+    <section id="explore" class="explore">
+        <div class="container">
+            <h2 class="section-title">Explore Our Courses</h2>
+            <p class="section-description">Discover a wide range of courses designed to help you master new skills</p>
+            
 
-      <label>Min Fatalities</label>
-      <input type="number" id="fatalFilter" placeholder="≥ fatalities" />
+            
+            <div class="courses-grid">
+                <div class="course-card animate-slide-up">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Web Development">
+                        <div class="premium-badge">Most Popular</div>
+                    </div>
+                    <div class="course-content">
+                        <h3>Full Stack Web Development</h3>
+                        <p>Learn HTML, CSS, JavaScript, and backend basics to build complete websites.</p>
+                        <div class="course-meta">
+                            <span class="course-category">Web Development</span>
+                            <span class="course-level">Beginner</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.location.href='webdev.html'">View Course</button>
+                    </div>
+                </div>
+                
+                <div class="course-card animate-slide-up">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Programming">
+                    </div>
+                    <div class="course-content">
+                        <h3>Python for Everyone</h3>
+                        <p>Master Python programming from basics to data handling.</p>
+                        <div class="course-meta">
+                            <span class="course-category">Programming</span>
+                            <span class="course-level">Beginner</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.location.href='python.html'">View Course</button>
+                    </div>
+                </div>
+                
+                <div class="course-card animate-slide-up">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Design">
+                    </div>
+                    <div class="course-content">
+                        <h3>UI/UX Design Fundamentals</h3>
+                        <p>Learn design principles and create stunning user interfaces.</p>
+                        <div class="course-meta">
+                            <span class="course-category">Design</span>
+                            <span class="course-level">Beginner</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.location.href='design.html'">View Course</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <button id="applyFilter">Apply Filters</button>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose FreeSkillz?</h2>
+            <p class="section-description">We provide the best learning experience with cutting-edge features</p>
+            
+            <div class="features-grid">
+                <div class="feature-card animate-slide-up">
+                    <div class="feature-icon">🎓</div>
+                    <h3>100% Free Courses</h3>
+                    <p>All courses are completely free with no hidden fees or subscriptions. Learn at your own pace without financial constraints.</p>
+                </div>
+                
+                <div class="feature-card animate-slide-up">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Certificates of Completion</h3>
+                    <p>Earn certificates after completing courses to showcase your skills and enhance your professional profile.</p>
+                </div>
+                
+                <div class="feature-card animate-slide-up">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Curated from Top Platforms</h3>
+                    <p>Handpicked courses from the best free educational resources online, ensuring high-quality content.</p>
+                </div>
+                
+                <div class="feature-card animate-slide-up">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Expert-Led Content</h3>
+                    <p>Learn from industry professionals with years of experience in their respective fields.</p>
+                </div>
+                
+                <div class="feature-card animate-slide-up">
+                    <div class="feature-icon">📱</div>
+                    <h3>Learn Anywhere</h3>
+                    <p>Access our courses from any device, anytime, anywhere. Perfect for busy schedules.</p>
+                </div>
+                
+                <div class="feature-card animate-slide-up">
+                    <div class="feature-icon">💬</div>
+                    <h3>Community Support</h3>
+                    <p>Join our vibrant community of learners to share knowledge and get support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <hr />
+    <!-- Reviews Section -->
+    <section id="reviews" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Learners Say</h2>
+            <p class="section-description">Hear from students who have transformed their careers with our courses</p>
+            
+            <div id="reviews-list" class="testimonials-grid">
+                <!-- Reviews will be loaded dynamically -->
+            </div>
+            
+            <!-- Testimonials Carousel -->
+            <div class="testimonials-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carousel-track">
+                        <!-- Testimonials will be loaded dynamically -->
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)">❮</button>
+                    <button class="carousel-btn next-btn" onclick="moveCarousel(1)">❯</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      <h3>Analytics</h3>
-      <div id="stats">
-        <p>Total Crashes: <span id="count"></span></p>
-        <p>Total Fatalities: <span id="fatalities"></span></p>
-        <p>Average Fatalities: <span id="avg"></span></p>
-      </div>
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-description">Find answers to common questions about our platform and courses</p>
+            
+            <div id="faq-list" class="faq-list">
+                <!-- FAQ items will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
 
-      <canvas id="chart" width="200" height="200"></canvas>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-description">Have questions or feedback? We'd love to hear from you</p>
+            
+            <form class="contact-form" onsubmit="submitContactForm(event)">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Start Your Learning Journey Today</h2>
+                <p>Join millions of students who have already transformed their careers with our courses</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="scrollToExplore()">Explore Courses</button>
+                    <button class="btn btn-outline" onclick="window.location.href='#contact'">Contact Us</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>FreeSkillz</h2>
+                    <p>Learn premium skills for free with our expert-curated courses and resources.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#explore">Explore</a></li>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#reviews">Reviews</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; FreeSkillz 2025. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Profile Button -->
+    <div class="profile-button" onclick="window.location.href='profile.html'">
+        <span>👤</span>
     </div>
 
-    <div id="map"></div>
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Log In</h2>
+            <p>Enter your name to continue:</p>
+            <input type="text" id="user-name-input" placeholder="Your Name" class="login-input">
+            <button class="btn btn-primary" onclick="loginUser()">Log In</button>
+        </div>
+    </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="src\script.js"></script>
-  </body>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        // Initialize animations and content when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initAnimations();
+            loadReviews();
+            loadFAQ();
+            loadCourses();
+            setupEventListeners();
+            checkLoginStatus(); // Check if user is already logged in
+            initTestimonialsCarousel(); // Initialize testimonials carousel
+        });
+        
+        // Testimonials Carousel
+        let carouselIndex = 0;
+        let carouselSlides = [];
+        
+        function initTestimonialsCarousel() {
+            const carouselTrack = document.getElementById('carousel-track');
+            if (!carouselTrack) return;
+            
+            // Sample testimonials data
+            const testimonials = [
+                {
+                    quote: "FreeSkillz completely transformed my career. I went from a beginner to a professional web developer in just 6 months!",
+                    author: "Sarah Johnson, Frontend Developer"
+                },
+                {
+                    quote: "The quality of courses here is unmatched. I've tried many platforms, but FreeSkillz stands out with its curated content.",
+                    author: "Michael Chen, Data Scientist"
+                },
+                {
+                    quote: "As a designer, I found the UI/UX courses incredibly valuable. The instructors are industry experts who share real insights.",
+                    author: "Emma Rodriguez, Product Designer"
+                },
+                {
+                    quote: "The flexibility of learning at my own pace while getting certified made FreeSkillz the perfect choice for my busy schedule.",
+                    author: "David Wilson, Software Engineer"
+                }
+            ];
+            
+            // Create carousel slides
+            testimonials.forEach(testimonial => {
+                const slide = document.createElement('div');
+                slide.className = 'carousel-slide';
+                slide.innerHTML = `
+                    <blockquote>"${testimonial.quote}"</blockquote>
+                    <div class="author">${testimonial.author}</div>
+                `;
+                carouselTrack.appendChild(slide);
+            });
+            
+            carouselSlides = document.querySelectorAll('.carousel-slide');
+            updateCarousel();
+        }
+        
+        function updateCarousel() {
+            const carouselTrack = document.getElementById('carousel-track');
+            if (carouselTrack && carouselSlides.length > 0) {
+                carouselTrack.style.transform = `translateX(-${carouselIndex * 100}%)`;
+            }
+        }
+        
+        function moveCarousel(direction) {
+            carouselIndex += direction;
+            
+            if (carouselIndex < 0) {
+                carouselIndex = carouselSlides.length - 1;
+            } else if (carouselIndex >= carouselSlides.length) {
+                carouselIndex = 0;
+            }
+            
+            updateCarousel();
+        }
+        
+        // Auto-rotate carousel
+        setInterval(() => {
+            moveCarousel(1);
+        }, 5000);
+        
+        // Check if user is logged in
+        function checkLoginStatus() {
+            const userName = localStorage.getItem('userName');
+            const loginBtn = document.getElementById('login-btn');
+            const profileBtn = document.getElementById('profile-btn');
+            const userGreeting = document.getElementById('user-greeting');
+            
+            if (userName) {
+                loginBtn.style.display = 'none';
+                profileBtn.style.display = 'inline-block';
+                userGreeting.textContent = `Hello, ${userName}!`;
+                userGreeting.style.display = 'inline-block';
+            } else {
+                loginBtn.style.display = 'inline-block';
+                profileBtn.style.display = 'none';
+                userGreeting.style.display = 'none';
+            }
+        }
+        
+        // Show login modal
+        function showLoginModal() {
+            document.getElementById('login-modal').style.display = 'block';
+        }
+        
+        // Close login modal
+        function closeLoginModal() {
+            document.getElementById('login-modal').style.display = 'none';
+        }
+        
+        // Login user
+        function loginUser() {
+            const userNameInput = document.getElementById('user-name-input');
+            const userName = userNameInput.value.trim();
+            
+            if (userName) {
+                localStorage.setItem('userName', userName);
+                closeLoginModal();
+                checkLoginStatus();
+                userNameInput.value = '';
+            } else {
+                alert('Please enter your name');
+            }
+        }
+        
+        // Initialize GSAP animations
+        function initAnimations() {
+            // Animate feature cards with stagger
+            gsap.utils.toArray('.feature-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%"
+                    },
+                    duration: 0.8,
+                    y: 30,
+                    opacity: 0,
+                    ease: "power2.out",
+                    delay: i * 0.2
+                });
+            });
+            
+            // Animate testimonial cards
+            gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 85%"
+                    },
+                    duration: 0.8,
+                    y: 30,
+                    opacity: 0,
+                    ease: "power2.out",
+                    delay: i * 0.1
+                });
+            });
+        }
+        
+        // Scroll to explore section
+        function scrollToExplore() {
+            document.querySelector('#explore').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        // Load reviews dynamically
+        function loadReviews() {
+            const reviewsList = document.getElementById('reviews-list');
+            
+            if (!reviewsList) return;
+            
+            // Fetch reviews from JSON file
+            fetch('data/reviews.json')
+                .then(response => response.json())
+                .then(reviewsData => {
+                    reviewsList.innerHTML = '';
+                    reviewsData.forEach(review => {
+                        const reviewCard = document.createElement('div');
+                        reviewCard.className = 'testimonial-card animate-slide-up';
+                        
+                        // Create star rating
+                        let stars = '';
+                        for (let i = 0; i < 5; i++) {
+                            stars += i < review.rating ? '★' : '☆';
+                        }
+                        
+                        reviewCard.innerHTML = `
+                            <div class="rating">${stars}</div>
+                            <p>"${review.comment}"</p>
+                            <div class="testimonial-author">
+                                <span class="author-name">— ${review.name}</span>
+                            </div>
+                        `;
+                        
+                        reviewsList.appendChild(reviewCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading reviews:', error);
+                    // Fallback to hardcoded data
+                    reviewsData.forEach(review => {
+                        const reviewCard = document.createElement('div');
+                        reviewCard.className = 'testimonial-card animate-slide-up';
+                        
+                        // Create star rating
+                        let stars = '';
+                        for (let i = 0; i < 5; i++) {
+                            stars += i < review.rating ? '★' : '☆';
+                        }
+                        
+                        reviewCard.innerHTML = `
+                            <div class="rating">${stars}</div>
+                            <p>"${review.comment}"</p>
+                            <div class="testimonial-author">
+                                <span class="author-name">— ${review.name}</span>
+                            </div>
+                        `;
+                        
+                        reviewsList.appendChild(reviewCard);
+                    });
+                });
+        }
+        
+        // Load FAQ dynamically
+        function loadFAQ() {
+            const faqList = document.getElementById('faq-list');
+            
+            if (!faqList) return;
+            
+            // Fetch FAQ from JSON file
+            fetch('data/faq.json')
+                .then(response => response.json())
+                .then(faqData => {
+                    faqList.innerHTML = '';
+                    faqData.forEach(faq => {
+                        const faqItem = document.createElement('div');
+                        faqItem.className = 'faq-item';
+                        
+                        faqItem.innerHTML = `
+                            <div class="faq-question">
+                                <span>${faq.q}</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>${faq.a}</p>
+                            </div>
+                        `;
+                        
+                        faqList.appendChild(faqItem);
+                    });
+                    
+                    // Add event listeners to FAQ questions
+                    document.querySelectorAll('.faq-question').forEach(question => {
+                        question.addEventListener('click', function() {
+                            this.classList.toggle('active');
+                            const answer = this.nextElementSibling;
+                            answer.classList.toggle('open');
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading FAQ:', error);
+                    // Fallback to hardcoded data
+                    faqData.forEach(faq => {
+                        const faqItem = document.createElement('div');
+                        faqItem.className = 'faq-item';
+                        
+                        faqItem.innerHTML = `
+                            <div class="faq-question">
+                                <span>${faq.q}</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>${faq.a}</p>
+                            </div>
+                        `;
+                        
+                        faqList.appendChild(faqItem);
+                    });
+                    
+                    // Add event listeners to FAQ questions
+                    document.querySelectorAll('.faq-question').forEach(question => {
+                        question.addEventListener('click', function() {
+                            this.classList.toggle('active');
+                            const answer = this.nextElementSibling;
+                            answer.classList.toggle('open');
+                        });
+                    });
+                });
+        }
+        
+        // Load courses dynamically
+        function loadCourses() {
+            const coursesGrid = document.getElementById('courses-grid');
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            
+            if (!coursesGrid) return;
+            
+            // Fetch courses from JSON file
+            fetch('courses/index.json')
+                .then(response => response.json())
+                .then(coursesData => {
+                    // Display all courses initially
+                    displayCourses(coursesData);
+                    
+                    // Set up search and filter event listeners
+                    searchInput.addEventListener('input', () => filterCourses(coursesData));
+                    categoryFilter.addEventListener('change', () => filterCourses(coursesData));
+                })
+                .catch(error => {
+                    console.error('Error loading courses:', error);
+                    // Fallback to hardcoded data
+                    displayCourses(coursesIndexData);
+                    searchInput.addEventListener('input', () => filterCourses(coursesIndexData));
+                    categoryFilter.addEventListener('change', () => filterCourses(coursesIndexData));
+                });
+        }
+        
+        // Display courses in the grid
+        function displayCourses(courses) {
+            const coursesGrid = document.getElementById('courses-grid');
+            coursesGrid.innerHTML = '';
+            
+            if (courses.length === 0) {
+                coursesGrid.innerHTML = '<p class="section-description">No courses found matching your criteria.</p>';
+                return;
+            }
+            
+            courses.forEach(course => {
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card animate-slide-up';
+                // Determine the course page URL based on course ID
+                let coursePageUrl = '#';
+                switch(course.id) {
+                    case 'webdev':
+                        coursePageUrl = 'webdev.html';
+                        break;
+                    case 'python':
+                        coursePageUrl = 'python.html';
+                        break;
+                    case 'design':
+                        coursePageUrl = 'design.html';
+                        break;
+                    default:
+                        coursePageUrl = `course.html?course=${course.id}`;
+                }
+                
+                // Check if course is popular (you can customize this logic)
+                const isPopular = course.id === 'webdev' || course.id === 'python';
+                
+                courseCard.innerHTML = `
+                    <div class="course-image">
+                        <img src="${course.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'}" alt="${course.title}">
+                        ${isPopular ? '<div class="premium-badge">Most Popular</div>' : ''}
+                    </div>
+                    <div class="course-content">
+                        <h3>${course.title}</h3>
+                        <p>${course.description}</p>
+                        <div class="course-meta">
+                            <span class="course-category">${course.category}</span>
+                            <span class="course-level">${course.level}</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="window.location.href='${coursePageUrl}'">View Course</button>
+                    </div>
+                `;
+                coursesGrid.appendChild(courseCard);
+            });
+        }
+        
+        // Filter courses based on search and category
+        function filterCourses(allCourses) {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            
+            const filteredCourses = allCourses.filter(course => {
+                const matchesSearch = course.title.toLowerCase().includes(searchTerm) || 
+                                     course.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'all' || course.category === category;
+                return matchesSearch && matchesCategory;
+            });
+            
+            displayCourses(filteredCourses);
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // Contact form submission
+            const contactForm = document.querySelector('.contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', submitContactForm);
+            }
+        }
+        
+        // Handle contact form submission
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Create mailto link
+            const subject = encodeURIComponent('FreeSkillz Contact Form');
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nMessage: ${message}`);
+            const mailtoLink = `mailto:contact@freeskillz.com?subject=${subject}&body=${body}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Reset form
+            event.target.reset();
+            
+            // Show confirmation
+            alert('Thank you for your message! We will get back to you soon.');
+        }
+        
+        // Enroll in a course
+        function enrollInCourse(courseId) {
+            // Check if user has already provided their name
+            let userName = localStorage.getItem('userName');
+            
+            if (!userName) {
+                userName = prompt('Please enter your name to enroll in this course:');
+                if (!userName) return;
+                localStorage.setItem('userName', userName);
+            }
+            
+            // Get current enrollments
+            let enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
+            
+            // Add course to enrollments if not already enrolled
+            if (!enrollments.includes(courseId)) {
+                enrollments.push(courseId);
+                localStorage.setItem('enrollments', JSON.stringify(enrollments));
+                alert(`Successfully enrolled in the course! Welcome, ${userName}!`);
+            } else {
+                alert(`You are already enrolled in this course, ${userName}!`);
+            }
+            
+            // Redirect to course page
+            window.location.href = `course.html?course=${courseId}`;
+        }
+    </script>
+</body>
 </html>

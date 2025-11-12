@@ -1,0 +1,20 @@
+{
+  "id": "design",
+  "title": "UI/UX Design Fundamentals",
+  "topics": [
+    {
+      "title": "Design Fundamentals",
+      "lessons": [
+        { "title": "Design Principles", "type": "video", "url": "https://www.youtube.com/embed/QeTbD3XEjhI" },
+        { "title": "Color Theory", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" }
+      ]
+    },
+    {
+      "title": "Typography and Layout",
+      "lessons": [
+        { "title": "Typography Basics", "type": "video", "url": "https://www.youtube.com/embed/sByzHoiYFX0" },
+        { "title": "Layout Composition", "type": "doc", "url": "https://docs.google.com/document/d/1example3/edit" }
+      ]
+    }
+  ]
+}
