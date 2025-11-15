@@ -10,75 +10,75 @@
 </head>
 <body>
     <!-- Profile Header -->
-    <section class="profile-header-modern">
-        <div class="profile-header-container-modern">
-            <div class="profile-avatar-modern">
-                <div class="avatar-circle-modern float-animation">
-                    <span class="avatar-initials-modern" id="avatar-initials">U</span>
+    <section class="profile-header">
+        <div class="profile-header-container">
+            <div class="profile-avatar">
+                <div class="avatar-circle float-animation">
+                    <span class="avatar-initials" id="avatar-initials">U</span>
                 </div>
             </div>
-            <div class="user-info-modern">
+            <div class="user-info">
                 <h1>Welcome, <span id="user-name">Guest</span></h1>
                 <p class="user-subtitle">Learning Enthusiast</p>
             </div>
-            <div class="profile-stats-modern">
-                <div class="stat-card-modern animate-slide-up">
+            <div class="profile-stats">
+                <div class="stat-card animate-slide-up">
                     <div class="stat-icon">📚</div>
-                    <span class="stat-value-modern" id="courses-count">0</span>
-                    <span class="stat-label-modern">Courses</span>
+                    <span class="stat-value" id="courses-count">0</span>
+                    <span class="stat-label">Courses</span>
                 </div>
-                <div class="stat-card-modern animate-slide-up">
+                <div class="stat-card animate-slide-up">
                     <div class="stat-icon">🏆</div>
-                    <span class="stat-value-modern" id="certificates-count">0</span>
-                    <span class="stat-label-modern">Certificates</span>
+                    <span class="stat-value" id="certificates-count">0</span>
+                    <span class="stat-label">Certificates</span>
                 </div>
-                <div class="stat-card-modern animate-slide-up">
+                <div class="stat-card animate-slide-up">
                     <div class="stat-icon">📈</div>
-                    <span class="stat-value-modern" id="completion-rate">0%</span>
-                    <span class="stat-label-modern">Completion</span>
+                    <span class="stat-value" id="completion-rate">0%</span>
+                    <span class="stat-label">Completion</span>
                 </div>
             </div>
-            <div class="profile-actions-modern">
-                <button class="btn-modern btn-secondary-modern" onclick="window.location.href='index.html'">
-                    <span class="btn-icon-modern">🏠</span> Back to Home
+            <div class="profile-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    <span class="btn-icon">🏠</span> Back to Home
                 </button>
-                <button class="btn-modern btn-outline-modern" onclick="logoutUser()">
-                    <span class="btn-icon-modern">🚪</span> Log Out
+                <button class="btn btn-outline" onclick="logoutUser()">
+                    <span class="btn-icon">🚪</span> Log Out
                 </button>
-                <button class="btn-modern btn-outline-modern" onclick="clearProfile()">
-                    <span class="btn-icon-modern">🗑️</span> Clear Profile
+                <button class="btn btn-outline" onclick="clearProfile()">
+                    <span class="btn-icon">🗑️</span> Clear Profile
                 </button>
             </div>
         </div>
     </section>
 
     <!-- Enrolled Courses -->
-    <section class="enrolled-courses-modern">
-        <div class="container-modern">
-            <div class="section-header-modern">
-                <h2 class="section-title-modern">My Enrolled Courses</h2>
-                <div class="section-actions-modern">
-                    <button class="btn-modern btn-sm-modern btn-outline-modern" onclick="window.location.href='index.html'">
-                        <span class="btn-icon-modern">🔍</span> Explore More
+    <section class="enrolled-courses">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">My Enrolled Courses</h2>
+                <div class="section-actions">
+                    <button class="btn btn-sm btn-outline" onclick="window.location.href='index.html'">
+                        <span class="btn-icon">🔍</span> Explore More
                     </button>
                 </div>
             </div>
-            <div id="enrolled-courses" class="enrolled-courses-grid-modern">
+            <div id="enrolled-courses" class="enrolled-courses-grid">
                 <!-- Enrolled courses will be loaded dynamically -->
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer-modern">
-        <div class="container-modern">
-            <div class="footer-content-modern">
-                <div class="footer-logo-modern">
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
                     <h2>FreeSkillz</h2>
                     <p>Learn premium skills for free with our expert-curated courses and resources.</p>
                 </div>
-                <div class="footer-links-modern">
-                    <div class="footer-column-modern">
+                <div class="footer-links">
+                    <div class="footer-column">
                         <h4>Navigation</h4>
                         <ul>
                             <li><a href="index.html#home">Home</a></li>
@@ -88,7 +88,7 @@
                             <li><a href="index.html#contact">Contact</a></li>
                         </ul>
                     </div>
-                    <div class="footer-column-modern">
+                    <div class="footer-column">
                         <h4>Legal</h4>
                         <ul>
                             <li><a href="#">Terms of Service</a></li>
@@ -97,25 +97,25 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom-modern">
+            <div class="footer-bottom">
                 <p>&copy; FreeSkillz 2025. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- Profile Button -->
-    <div class="profile-button-modern" onclick="window.location.href='index.html'">
+    <div class="profile-button" onclick="window.location.href='index.html'">
         <span>🏠</span>
     </div>
 
     <!-- Login Modal -->
-    <div id="login-modal" class="modal-modern" style="display: none;">
-        <div class="modal-content-modern">
-            <span class="close-modern" onclick="closeLoginModal()">&times;</span>
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
             <h2>Log In</h2>
             <p>Enter your name to continue:</p>
-            <input type="text" id="user-name-input" placeholder="Your Name" class="login-input-modern">
-            <button class="btn-modern btn-primary-modern" onclick="loginUser()">Log In</button>
+            <input type="text" id="user-name-input" placeholder="Your Name" class="login-input">
+            <button class="btn btn-primary" onclick="loginUser()">Log In</button>
         </div>
     </div>
 
@@ -127,187 +127,6 @@
             checkLoginStatus(); // Check login status first
             displayUserProfile();
         });
-        
-        // Check if user is logged in
-        function checkLoginStatus() {
-            const userName = localStorage.getItem('userName');
-            const loginBtn = document.getElementById('login-btn');
-            const profileBtn = document.getElementById('profile-btn');
-            const userGreeting = document.getElementById('user-greeting');
-            
-            if (userName) {
-                loginBtn.style.display = 'none';
-                profileBtn.style.display = 'inline-block';
-                userGreeting.textContent = `Hello, ${userName}!`;
-                userGreeting.style.display = 'inline-block';
-            } else {
-                // Redirect to home page if not logged in
-                window.location.href = 'index.html';
-            }
-        }
-        
-        // Show login modal
-        function showLoginModal() {
-            document.getElementById('login-modal').style.display = 'flex';
-        }
-        
-        // Close login modal
-        function closeLoginModal() {
-            document.getElementById('login-modal').style.display = 'none';
-        }
-        
-        // Login user
-        function loginUser() {
-            const userNameInput = document.getElementById('user-name-input');
-            const userName = userNameInput.value.trim();
-            
-            if (userName) {
-                localStorage.setItem('userName', userName);
-                closeLoginModal();
-                checkLoginStatus();
-                userNameInput.value = '';
-                // Reload profile to show user data
-                displayUserProfile();
-            } else {
-                alert('Please enter your name');
-            }
-        }
-        
-        // Logout user
-        function logoutUser() {
-            if (confirm('Are you sure you want to log out?')) {
-                localStorage.removeItem('userName');
-                localStorage.removeItem('enrollments');
-                // Remove all course progress data
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith('completedLessons_')) {
-                        localStorage.removeItem(key);
-                    }
-                });
-                // Redirect to home page
-                window.location.href = 'index.html';
-            }
-        }
-        
-        // Display user profile
-        function displayUserProfile() {
-            const userName = localStorage.getItem('userName');
-            const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
-            
-            if (!userName) {
-                // Redirect to home page if not logged in
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            // Set user name and avatar initials
-            document.getElementById('user-name').textContent = userName;
-            document.getElementById('avatar-initials').textContent = userName.charAt(0).toUpperCase();
-            
-            // Update stats
-            document.getElementById('courses-count').textContent = enrollments.length;
-            document.getElementById('certificates-count').textContent = Math.floor(enrollments.length * 0.7); // Simulate certificates
-            document.getElementById('completion-rate').textContent = enrollments.length > 0 ? '42%' : '0%'; // Simulate completion rate
-            
-            // Display enrolled courses
-            const enrolledCoursesList = document.getElementById('enrolled-courses');
-            if (enrollments.length === 0) {
-                enrolledCoursesList.innerHTML = '<div class="empty-state-modern"><p>You have not enrolled in any courses yet.</p><button class="btn-modern btn-primary-modern" onclick="window.location.href=\'index.html\'">Explore Courses</button></div>';
-                return;
-            }
-            
-            // Load courses index to get course details
-            fetch('courses/index.json')
-                .then(response => response.json())
-                .then(coursesIndexData => {
-                    // Filter courses that user is enrolled in
-                    const enrolledCourses = coursesIndexData.filter(course => 
-                        enrollments.includes(course.id)
-                    );
-                    
-                    enrolledCoursesList.innerHTML = '';
-                    enrolledCourses.forEach(course => {
-                        const courseElement = document.createElement('div');
-                        courseElement.className = 'profile-course-card-modern animate-slide-up';
-                        
-                        // Determine the course page URL based on course ID
-                        let coursePageUrl = `course.html?course=${course.id}`;
-                        
-                        // Check if course is popular
-                        const isPopular = course.id === 'webdev' || course.id === 'python';
-                        
-                        courseElement.innerHTML = `
-                            <div class="course-image-modern">
-                                <img src="${course.image || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80'}" alt="${course.title}">
-                                ${isPopular ? '<div class="premium-badge-modern">Popular</div>' : ''}
-                            </div>
-                            <div class="course-content-modern">
-                                <h3>${course.title}</h3>
-                                <p>${course.description}</p>
-                                <div class="course-meta-modern">
-                                    <span class="course-category-modern">${course.category}</span>
-                                    <span class="course-level-modern">${course.level}</span>
-                                </div>
-                                <div class="course-progress-modern">
-                                    <div class="progress-bar-modern">
-                                        <div class="progress-fill-modern" style="width: ${Math.floor(Math.random() * 100)}%"></div>
-                                    </div>
-                                    <span class="progress-text-modern">${Math.floor(Math.random() * 100)}% complete</span>
-                                </div>
-                                <button class="btn-modern btn-primary-modern" onclick="window.location.href='${coursePageUrl}'">Continue Learning</button>
-                            </div>
-                        `;
-                        enrolledCoursesList.appendChild(courseElement);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading courses index:', error);
-                    // Fallback to hardcoded data from data.js
-                    if (typeof coursesIndexData !== 'undefined') {
-                        // Filter courses that user is enrolled in
-                        const enrolledCourses = coursesIndexData.filter(course => 
-                            enrollments.includes(course.id)
-                        );
-                        
-                        enrolledCoursesList.innerHTML = '';
-                        enrolledCourses.forEach(course => {
-                            const courseElement = document.createElement('div');
-                            courseElement.className = 'profile-course-card-modern animate-slide-up';
-                            
-                            // Determine the course page URL based on course ID
-                            let coursePageUrl = `course.html?course=${course.id}`;
-                            
-                            // Check if course is popular
-                            const isPopular = course.id === 'webdev' || course.id === 'python';
-                            
-                            courseElement.innerHTML = `
-                                <div class="course-image-modern">
-                                    <img src="${course.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'}" alt="${course.title}">
-                                    ${isPopular ? '<div class="premium-badge-modern">Popular</div>' : ''}
-                                </div>
-                                <div class="course-content-modern">
-                                    <h3>${course.title}</h3>
-                                    <p>${course.description}</p>
-                                    <div class="course-meta-modern">
-                                        <span class="course-category-modern">${course.category}</span>
-                                        <span class="course-level-modern">${course.level}</span>
-                                    </div>
-                                    <div class="course-progress-modern">
-                                        <div class="progress-bar-modern">
-                                            <div class="progress-fill-modern" style="width: ${Math.floor(Math.random() * 100)}%"></div>
-                                        </div>
-                                        <span class="progress-text-modern">${Math.floor(Math.random() * 100)}% complete</span>
-                                    </div>
-                                    <button class="btn-modern btn-primary-modern" onclick="window.location.href='${coursePageUrl}'">Continue Learning</button>
-                                </div>
-                            `;
-                            enrolledCoursesList.appendChild(courseElement);
-                        });
-                    } else {
-                        enrolledCoursesList.innerHTML = '<p>Error loading course data. Please try again later.</p>';
-                    }
-                });
-        }
     </script>
 </body>
 </html>
