@@ -211,20 +211,7 @@
                         courseElement.className = 'profile-course-card-modern animate-slide-up';
                         
                         // Determine the course page URL based on course ID
-                        let coursePageUrl = '#';
-                        switch(course.id) {
-                            case 'webdev':
-                                coursePageUrl = 'webdev.html';
-                                break;
-                            case 'python':
-                                coursePageUrl = 'python.html';
-                                break;
-                            case 'design':
-                                coursePageUrl = 'design.html';
-                                break;
-                            default:
-                                coursePageUrl = `course.html?course=${course.id}`;
-                        }
+                        let coursePageUrl = `course.html?course=${course.id}`;
                         
                         // Check if course is popular
                         const isPopular = course.id === 'webdev' || course.id === 'python';
@@ -266,20 +253,7 @@
                         courseElement.className = 'profile-course-card-modern animate-slide-up';
                         
                         // Determine the course page URL based on course ID
-                        let coursePageUrl = '#';
-                        switch(course.id) {
-                            case 'webdev':
-                                coursePageUrl = 'webdev.html';
-                                break;
-                            case 'python':
-                                coursePageUrl = 'python.html';
-                                break;
-                            case 'design':
-                                coursePageUrl = 'design.html';
-                                break;
-                            default:
-                                coursePageUrl = `course.html?course=${course.id}`;
-                        }
+                        let coursePageUrl = `course.html?course=${course.id}`;
                         
                         // Check if course is popular
                         const isPopular = course.id === 'webdev' || course.id === 'python';

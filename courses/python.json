@@ -1,20 +1,10 @@
 {
   "id": "python",
   "title": "Python for Everyone",
-  "topics": [
-    {
-      "title": "Python Basics",
-      "lessons": [
-        { "title": "Python Introduction", "type": "video", "url": "https://www.youtube.com/embed/rfscVS0vtbw" },
-        { "title": "Variables and Data Types", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" }
-      ]
-    },
-    {
-      "title": "Programming Fundamentals",
-      "lessons": [
-        { "title": "Control Structures", "type": "video", "url": "https://www.youtube.com/embed/4OCd7Je12II" },
-        { "title": "Functions and Modules", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" }
-      ]
-    }
+  "lessons": [
+    { "title": "Python Introduction", "type": "video", "url": "https://www.youtube.com/embed/rfscVS0vtbw" },
+    { "title": "Variables and Data Types", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
+    { "title": "Control Structures", "type": "video", "url": "https://www.youtube.com/embed/4OCd7Je12II" },
+    { "title": "Functions and Modules", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" }
   ]
 }
