@@ -1,11 +1,28 @@
 {
   "id": "webdev",
   "title": "Full Stack Web Development",
-  "lessons": [
-    { "title": "HTML Basics", "type": "video", "url": "https://www.youtube.com/embed/hQVTIJBZook" },
-    { "title": "CSS Layouts", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
-    { "title": "JavaScript Fundamentals", "type": "video", "url": "https://www.youtube.com/embed/W6NZfCO5SIk" },
-    { "title": "DOM Manipulation", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" },
-    { "title": "Backend with Node.js", "type": "video", "url": "https://www.youtube.com/embed/TlB_eWDSMt4" }
+  "topics": [
+    {
+      "title": "Frontend Fundamentals",
+      "lessons": [
+        { "title": "HTML Basics", "type": "video", "url": "https://www.youtube.com/embed/hQVTIJBZook" },
+        { "title": "CSS Layouts", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
+        { "title": "JavaScript Fundamentals", "type": "video", "url": "https://www.youtube.com/embed/W6NZfCO5SIk" }
+      ]
+    },
+    {
+      "title": "Interactive Web Development",
+      "lessons": [
+        { "title": "DOM Manipulation", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" },
+        { "title": "Event Handling", "type": "video", "url": "https://www.youtube.com/embed/example1" }
+      ]
+    },
+    {
+      "title": "Backend Development",
+      "lessons": [
+        { "title": "Backend with Node.js", "type": "video", "url": "https://www.youtube.com/embed/TlB_eWDSMt4" },
+        { "title": "Database Integration", "type": "doc", "url": "https://docs.google.com/document/d/1example2/edit" }
+      ]
+    }
   ]
 }
