@@ -1,5 +1,24 @@
 // Main application JavaScript for FreeSkillz
 
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    checkLoginStatus();
+    setupEventListeners();
+});
+
+// Set up event listeners
+function setupEventListeners() {
+    // Add event listener for Enter key in login input
+    const userNameInput = document.getElementById('user-name-input');
+    if (userNameInput) {
+        userNameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginUser();
+            }
+        });
+    }
+}
+
 // Check if user is logged in
 function checkLoginStatus() {
     const userName = localStorage.getItem('userName');
@@ -23,7 +42,7 @@ function checkLoginStatus() {
 function showLoginModal() {
     const modal = document.getElementById('login-modal');
     if (modal) {
-        modal.style.display = 'block';
+        modal.style.display = 'flex'; // Changed from 'block' to 'flex' for better centering
     }
 }
 
@@ -57,6 +76,25 @@ function loginUser() {
     }
 }
 
+// Logout user
+function logoutUser() {
+    if (confirm('Are you sure you want to log out?')) {
+        localStorage.removeItem('userName');
+        localStorage.removeItem('enrollments');
+        // Remove all course progress data
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('completedLessons_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        checkLoginStatus();
+        // Redirect to home page if on profile page
+        if (window.location.pathname.includes('profile.html')) {
+            window.location.href = 'index.html';
+        }
+    }
+}
+
 // Enroll in a course
 function enrollInCourse(courseId) {
     // Check if user has already provided their name
@@ -66,6 +104,7 @@ function enrollInCourse(courseId) {
         userName = prompt('Please enter your name to enroll in this course:');
         if (!userName) return;
         localStorage.setItem('userName', userName);
+        checkLoginStatus(); // Update UI after setting user name
     }
     
     // Get current enrollments
@@ -90,7 +129,8 @@ function displayUserProfile() {
     const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
     
     if (!userName) {
-        document.getElementById('user-name').textContent = 'No profile data found';
+        // Redirect to home page if not logged in
+        window.location.href = 'index.html';
         return;
     }
     
@@ -150,6 +190,12 @@ function clearProfile() {
     if (confirm('Are you sure you want to clear your profile data? This will remove all your enrollments.')) {
         localStorage.removeItem('userName');
         localStorage.removeItem('enrollments');
+        // Remove all course progress data
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('completedLessons_')) {
+                localStorage.removeItem(key);
+            }
+        });
         alert('Profile data cleared successfully!');
         location.reload();
     }

@@ -42,6 +42,9 @@
                 <button class="btn-modern btn-secondary-modern" onclick="window.location.href='index.html'">
                     <span class="btn-icon-modern">🏠</span> Back to Home
                 </button>
+                <button class="btn-modern btn-outline-modern" onclick="logoutUser()">
+                    <span class="btn-icon-modern">🚪</span> Log Out
+                </button>
                 <button class="btn-modern btn-outline-modern" onclick="clearProfile()">
                     <span class="btn-icon-modern">🗑️</span> Clear Profile
                 </button>
@@ -145,7 +148,7 @@
         
         // Show login modal
         function showLoginModal() {
-            document.getElementById('login-modal').style.display = 'block';
+            document.getElementById('login-modal').style.display = 'flex';
         }
         
         // Close login modal
@@ -170,13 +173,30 @@
             }
         }
         
+        // Logout user
+        function logoutUser() {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('userName');
+                localStorage.removeItem('enrollments');
+                // Remove all course progress data
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('completedLessons_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                // Redirect to home page
+                window.location.href = 'index.html';
+            }
+        }
+        
         // Display user profile
         function displayUserProfile() {
             const userName = localStorage.getItem('userName');
             const enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
             
             if (!userName) {
-                document.getElementById('user-name').textContent = 'No profile data found';
+                // Redirect to home page if not logged in
+                window.location.href = 'index.html';
                 return;
             }
             
