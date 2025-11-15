@@ -9,13 +9,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
-
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2>Log In</h2>
+            <p>Enter your name to continue:</p>
+            <input type="text" id="user-name-input" placeholder="Your Name" class="login-input">
+            <button class="btn btn-primary" onclick="loginUser()">Log In</button>
+        </div>
+    </div>
 
     <!-- Course Header -->
     <section class="course-header">
         <div class="course-header-container">
-            <h1 id="course-title">Loading course...</h1>
-            <button id="enroll-btn" class="btn btn-secondary" onclick="enrollInCourse()">Enroll in Course</button>
+            <div id="premium-badge-container"></div>
+            <h1 id="course-title">Loading Course...</h1>
+            <button id="enroll-btn" class="btn btn-primary" onclick="enrollInCourseFromPage()">Enroll in Course</button>
         </div>
     </section>
 
@@ -26,19 +36,46 @@
                 <!-- Player Section (Left) -->
                 <div class="player-section">
                     <div class="player-container">
-                        <div id="player-placeholder">
-                            <h3>Select a lesson to begin</h3>
-                            <p>Please choose a lesson from the list on the right</p>
+                        <!-- Course Title at the top of player -->
+                        <h2 id="player-course-title" class="course-title-header">Loading Course...</h2>
+                        
+                        <div id="player-placeholder" class="player-placeholder">
+                            <div class="player-placeholder-content">
+                                <h3>Select a lesson to begin</h3>
+                                <p>Please choose a lesson from the list on the right to start learning</p>
+                                <div class="player-placeholder-icon">▶️</div>
+                            </div>
                         </div>
-                        <iframe id="lesson-player" style="display: none; width: 100%; height: 450px; border-radius: var(--radius-sm);" frameborder="0" 
+                        <iframe id="lesson-player" class="lesson-player" frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen></iframe>
+                        <div id="document-viewer" class="document-viewer" style="display: none;">
+                            <h3 id="document-title">Document Lesson</h3>
+                            <p>This is a document lesson. Please click the button below to access the document:</p>
+                            <a id="document-link" href="#" target="_blank" class="btn btn-primary">View Document</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Lesson Progress Tracker -->
+                    <div class="lesson-progress">
+                        <div class="progress-info">
+                            <span id="current-lesson">No lesson selected</span>
+                            <span id="lesson-counter">0/0 lessons completed</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Lessons List (Right) -->
                 <div class="lessons-section">
-                    <h2>Course Lessons</h2>
+                    <div class="lessons-header">
+                        <h2>Course Lessons</h2>
+                        <div class="course-stats">
+                            <span id="completed-count">0</span> of <span id="total-count">0</span> lessons completed
+                        </div>
+                    </div>
                     <div id="lessons-list" class="lessons-list-sidebar">
                         <!-- Lessons will be loaded dynamically -->
                     </div>
@@ -86,344 +123,157 @@
         <span>👤</span>
     </div>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
-            <h2>Log In</h2>
-            <p>Enter your name to continue:</p>
-            <input type="text" id="user-name-input" placeholder="Your Name" class="login-input">
-            <button class="btn btn-primary" onclick="loginUser()">Log In</button>
-        </div>
-    </div>
-
     <script src="assets/js/data.js"></script>
     <script src="assets/js/app.js"></script>
     <script>
+        // Global variables to store course data
+        let currentCourseData = null;
+        let courseId = null;
+        
         // Load course details when page loads
         document.addEventListener('DOMContentLoaded', function() {
             checkLoginStatus(); // Check login status first
+            
+            // Get course ID from URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            const courseId = urlParams.get('course');
+            courseId = urlParams.get('course');
             
             if (courseId) {
                 loadCourseDetails(courseId);
             } else {
-                document.getElementById('course-title').textContent = 'Course not found';
+                // Redirect to home if no course ID provided
+                window.location.href = 'index.html';
             }
         });
         
-        // Check if user is logged in
-        function checkLoginStatus() {
-            const userName = localStorage.getItem('userName');
-            const loginBtn = document.getElementById('login-btn');
-            const profileBtn = document.getElementById('profile-btn');
-            const userGreeting = document.getElementById('user-greeting');
-            
-            if (userName) {
-                loginBtn.style.display = 'none';
-                profileBtn.style.display = 'inline-block';
-                userGreeting.textContent = `Hello, ${userName}!`;
-                userGreeting.style.display = 'inline-block';
-            } else {
-                // Redirect to home page if not logged in
-                window.location.href = 'index.html';
-            }
-        }
-        
-        // Show login modal
-        function showLoginModal() {
-            document.getElementById('login-modal').style.display = 'block';
-        }
-        
-        // Close login modal
-        function closeLoginModal() {
-            document.getElementById('login-modal').style.display = 'none';
-        }
-        
-        // Login user
-        function loginUser() {
-            const userNameInput = document.getElementById('user-name-input');
-            const userName = userNameInput.value.trim();
-            
-            if (userName) {
-                localStorage.setItem('userName', userName);
-                closeLoginModal();
-                checkLoginStatus();
-                userNameInput.value = '';
-            } else {
-                alert('Please enter your name');
-            }
-        }
-        
-        // Load course details
+        // Load course details from JSON
         function loadCourseDetails(courseId) {
             // Fetch course data from JSON file
             fetch(`courses/${courseId}.json`)
-                .then(response => response.json())
-                .then(courseData => {
-                    // Update course title
-                    document.getElementById('course-title').textContent = courseData.title;
-                    
-                    // Update enroll button to pass course ID
-                    document.getElementById('enroll-btn').setAttribute('onclick', `enrollInCourse('${courseId}')`);
-                    
-                    // Load topics and lessons
-                    const lessonsList = document.getElementById('lessons-list');
-                    lessonsList.innerHTML = '';
-                    
-                    // Get completed lessons from localStorage
-                    const completedLessons = JSON.parse(localStorage.getItem(`completedLessons_${courseId}`) || '[]');
-                    
-                    // Check if course data has topics structure or flat lessons
-                    if (courseData.topics) {
-                        // Create a flat list of all lessons with their topic info
-                        let allLessons = [];
-                        courseData.topics.forEach((topic, topicIndex) => {
-                            topic.lessons.forEach((lesson, lessonIndex) => {
-                                allLessons.push({
-                                    ...lesson,
-                                    topicTitle: topic.title,
-                                    topicIndex: topicIndex,
-                                    lessonIndex: lessonIndex,
-                                    globalIndex: allLessons.length
-                                });
-                            });
-                        });
-                        
-                        // Add topics and lessons to the UI
-                        courseData.topics.forEach((topic, topicIndex) => {
-                            // Create topic header
-                            const topicElement = document.createElement('div');
-                            topicElement.className = 'topic-header';
-                            topicElement.innerHTML = `
-                                <h3 class="topic-title">${topic.title}</h3>
-                            `;
-                            lessonsList.appendChild(topicElement);
-                            
-                            // Add lessons for this topic
-                            topic.lessons.forEach((lesson, lessonIndex) => {
-                                const globalIndex = allLessons.findIndex(l => 
-                                    l.topicIndex === topicIndex && l.lessonIndex === lessonIndex);
-                                
-                                const lessonElement = document.createElement('div');
-                                lessonElement.className = 'lesson-item';
-                                lessonElement.setAttribute('data-lesson-index', globalIndex);
-                                
-                                // Check if lesson is completed
-                                const isCompleted = completedLessons.includes(globalIndex);
-                                const completedClass = isCompleted ? 'completed' : '';
-                                const completedText = isCompleted ? 'Completed' : 'Mark as Done';
-                                
-                                lessonElement.innerHTML = `
-                                    <div class="lesson-info ${completedClass}">
-                                        <div class="lesson-title">${lesson.title}</div>
-                                        <div class="lesson-type">${lesson.type === 'video' ? 'Video' : 'Document'}</div>
-                                    </div>
-                                    <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseId}', ${globalIndex}, this)">
-                                        ${completedText}
-                                    </button>
-                                `;
-                                
-                                // Add click event to load lesson
-                                lessonElement.addEventListener('click', function(e) {
-                                    if (!e.target.classList.contains('btn-mark')) {
-                                        loadLesson(lesson, globalIndex);
-                                    }
-                                });
-                                
-                                lessonsList.appendChild(lessonElement);
-                            });
-                        });
-                    } else {
-                        // Fallback to original flat lessons structure
-                        courseData.lessons.forEach((lesson, index) => {
-                            const lessonElement = document.createElement('div');
-                            lessonElement.className = 'lesson-item';
-                            lessonElement.setAttribute('data-lesson-index', index);
-                            
-                            // Check if lesson is completed
-                            const isCompleted = completedLessons.includes(index);
-                            const completedClass = isCompleted ? 'completed' : '';
-                            const completedText = isCompleted ? 'Completed' : 'Mark as Done';
-                            
-                            lessonElement.innerHTML = `
-                                <div class="lesson-info ${completedClass}">
-                                    <div class="lesson-title">${lesson.title}</div>
-                                    <div class="lesson-type">${lesson.type === 'video' ? 'Video' : 'Document'}</div>
-                                </div>
-                                <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseId}', ${index}, this)">
-                                    ${completedText}
-                                </button>
-                            `;
-                            
-                            // Add click event to load lesson
-                            lessonElement.addEventListener('click', function(e) {
-                                if (!e.target.classList.contains('btn-mark')) {
-                                    loadLesson(lesson, index);
-                                }
-                            });
-                            
-                            lessonsList.appendChild(lessonElement);
-                        });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Course not found');
                     }
+                    return response.json();
+                })
+                .then(courseData => {
+                    currentCourseData = courseData;
+                    displayCourseDetails(courseData);
                 })
                 .catch(error => {
-                    console.error('Error loading course data:', error);
+                    console.error('Error loading course:', error);
                     // Fallback to hardcoded data
-                    let courseData;
-                    
-                    // Find course data based on ID
+                    let fallbackData = null;
                     switch(courseId) {
                         case 'webdev':
-                            courseData = webdevCourseData;
+                            fallbackData = webdevCourseData;
                             break;
                         case 'python':
-                            courseData = pythonCourseData;
+                            fallbackData = pythonCourseData;
                             break;
                         case 'design':
-                            courseData = designCourseData;
+                            fallbackData = designCourseData;
                             break;
                         default:
-                            document.getElementById('course-title').textContent = 'Course not found';
+                            // Redirect to home if course not found
+                            window.location.href = 'index.html';
                             return;
                     }
-                    
-                    // Update course title
-                    document.getElementById('course-title').textContent = courseData.title;
-                    
-                    // Update enroll button to pass course ID
-                    document.getElementById('enroll-btn').setAttribute('onclick', `enrollInCourse('${courseId}')`);
-                    
-                    // Load topics and lessons
-                    const lessonsList = document.getElementById('lessons-list');
-                    lessonsList.innerHTML = '';
-                    
-                    // Get completed lessons from localStorage
-                    const completedLessons = JSON.parse(localStorage.getItem(`completedLessons_${courseId}`) || '[]');
-                    
-                    // Check if course data has topics structure or flat lessons
-                    if (courseData.topics) {
-                        // Calculate total lessons
-                        let totalLessons = 0;
-                        courseData.topics.forEach(topic => {
-                            totalLessons += topic.lessons.length;
-                        });
-                        
-                        // Create a flat list of all lessons with their topic info
-                        let allLessons = [];
-                        courseData.topics.forEach((topic, topicIndex) => {
-                            topic.lessons.forEach((lesson, lessonIndex) => {
-                                allLessons.push({
-                                    ...lesson,
-                                    topicTitle: topic.title,
-                                    topicIndex: topicIndex,
-                                    lessonIndex: lessonIndex,
-                                    globalIndex: allLessons.length
-                                });
-                            });
-                        });
-                        
-                        // Add topics and lessons to the UI
-                        courseData.topics.forEach((topic, topicIndex) => {
-                            // Create topic header
-                            const topicElement = document.createElement('div');
-                            topicElement.className = 'topic-header';
-                            topicElement.innerHTML = `
-                                <h3 class="topic-title">${topic.title}</h3>
-                            `;
-                            lessonsList.appendChild(topicElement);
-                            
-                            // Add lessons for this topic
-                            topic.lessons.forEach((lesson, lessonIndex) => {
-                                const globalIndex = allLessons.findIndex(l => 
-                                    l.topicIndex === topicIndex && l.lessonIndex === lessonIndex);
-                                
-                                const lessonElement = document.createElement('div');
-                                lessonElement.className = 'lesson-item';
-                                lessonElement.setAttribute('data-lesson-index', globalIndex);
-                                
-                                // Check if lesson is completed
-                                const isCompleted = completedLessons.includes(globalIndex);
-                                const completedClass = isCompleted ? 'completed' : '';
-                                const completedText = isCompleted ? 'Completed' : 'Mark as Done';
-                                
-                                lessonElement.innerHTML = `
-                                    <div class="lesson-info ${completedClass}">
-                                        <div class="lesson-title">${lesson.title}</div>
-                                        <div class="lesson-type">${lesson.type === 'video' ? 'Video' : 'Document'}</div>
-                                    </div>
-                                    <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseId}', ${globalIndex}, this)">
-                                        ${completedText}
-                                    </button>
-                                `;
-                                
-                                // Add click event to load lesson
-                                lessonElement.addEventListener('click', function(e) {
-                                    if (!e.target.classList.contains('btn-mark')) {
-                                        loadLesson(lesson, globalIndex);
-                                    }
-                                });
-                                
-                                lessonsList.appendChild(lessonElement);
-                            });
-                        });
-                    } else {
-                        // Fallback to original flat lessons structure
-                        courseData.lessons.forEach((lesson, index) => {
-                            const lessonElement = document.createElement('div');
-                            lessonElement.className = 'lesson-item';
-                            lessonElement.setAttribute('data-lesson-index', index);
-                            
-                            // Check if lesson is completed
-                            const isCompleted = completedLessons.includes(index);
-                            const completedClass = isCompleted ? 'completed' : '';
-                            const completedText = isCompleted ? 'Completed' : 'Mark as Done';
-                            
-                            lessonElement.innerHTML = `
-                                <div class="lesson-info ${completedClass}">
-                                    <div class="lesson-title">${lesson.title}</div>
-                                    <div class="lesson-type">${lesson.type === 'video' ? 'Video' : 'Document'}</div>
-                                </div>
-                                <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseId}', ${index}, this)">
-                                    ${completedText}
-                                </button>
-                            `;
-                            
-                            // Add click event to load lesson
-                            lessonElement.addEventListener('click', function(e) {
-                                if (!e.target.classList.contains('btn-mark')) {
-                                    loadLesson(lesson, index);
-                                }
-                            });
-                            
-                            lessonsList.appendChild(lessonElement);
-                        });
-                    }
+                    currentCourseData = fallbackData;
+                    displayCourseDetails(fallbackData);
                 });
         }
         
+        // Display course details
+        function displayCourseDetails(courseData) {
+            // Update course title
+            document.getElementById('course-title').textContent = courseData.title;
+            document.getElementById('player-course-title').textContent = courseData.title;
+            
+            // Update total lesson count
+            document.getElementById('total-count').textContent = courseData.lessons.length;
+            
+            // Show premium badge for popular courses
+            const badgeContainer = document.getElementById('premium-badge-container');
+            if (courseData.id === 'webdev' || courseData.id === 'python') {
+                badgeContainer.innerHTML = '<div class="premium-badge">Most Popular</div>';
+            } else {
+                badgeContainer.innerHTML = '';
+            }
+            
+            // Update enroll button
+            document.getElementById('enroll-btn').setAttribute('onclick', `enrollInCourse('${courseData.id}')`);
+            
+            // Load lessons
+            const lessonsList = document.getElementById('lessons-list');
+            lessonsList.innerHTML = '';
+            
+            // Get completed lessons from localStorage
+            const completedLessons = JSON.parse(localStorage.getItem(`completedLessons_${courseData.id}`) || '[]');
+            
+            // Update completed count
+            document.getElementById('completed-count').textContent = completedLessons.length;
+            
+            // Update progress bar
+            updateProgress(courseData.lessons.length, completedLessons.length);
+            
+            // Add lessons to the UI
+            courseData.lessons.forEach((lesson, index) => {
+                const lessonElement = document.createElement('div');
+                lessonElement.className = 'lesson-item';
+                lessonElement.setAttribute('data-lesson-index', index);
+                
+                // Check if lesson is completed
+                const isCompleted = completedLessons.includes(index);
+                const completedClass = isCompleted ? 'completed' : '';
+                const completedText = isCompleted ? 'Completed' : 'Mark as Done';
+                
+                lessonElement.innerHTML = `
+                    <div class="lesson-info ${completedClass}">
+                        <div class="lesson-index">${index + 1}</div>
+                        <div class="lesson-details">
+                            <div class="lesson-title">${lesson.title}</div>
+                            <div class="lesson-type">${lesson.type === 'video' ? 'Video Lesson' : 'Document Lesson'}</div>
+                        </div>
+                    </div>
+                    <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseData.id}', ${index}, this)">
+                        ${completedText}
+                    </button>
+                `;
+                
+                // Add click event to load lesson
+                lessonElement.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('btn-mark')) {
+                        loadLesson(lesson, index, courseData.lessons.length);
+                    }
+                });
+                
+                lessonsList.appendChild(lessonElement);
+            });
+        }
+        
         // Load lesson in player
-        function loadLesson(lesson, index) {
+        function loadLesson(lesson, index, totalLessons) {
             const playerPlaceholder = document.getElementById('player-placeholder');
             const lessonPlayer = document.getElementById('lesson-player');
+            const documentViewer = document.getElementById('document-viewer');
+            const documentLink = document.getElementById('document-link');
+            const documentTitle = document.getElementById('document-title');
             
-            // Update current lesson info with topic if available
-            const topicInfo = lesson.topicTitle ? `Topic: ${lesson.topicTitle} | ` : '';
-            document.getElementById('current-lesson').textContent = `${topicInfo}Lesson: ${lesson.title}`;
+            // Update current lesson info
+            document.getElementById('current-lesson').textContent = `Lesson ${index + 1}: ${lesson.title}`;
             
             if (lesson.type === 'video') {
                 playerPlaceholder.style.display = 'none';
+                documentViewer.style.display = 'none';
                 lessonPlayer.style.display = 'block';
                 lessonPlayer.src = lesson.url;
             } else {
+                playerPlaceholder.style.display = 'none';
                 lessonPlayer.style.display = 'none';
-                playerPlaceholder.style.display = 'block';
-                playerPlaceholder.innerHTML = `
-                    <h3>${lesson.title}</h3>
-                    <p>This is a document lesson. Please click the button below to access the document:</p>
-                    <a href="${lesson.url}" target="_blank" class="btn btn-primary">View Document</a>
-                `;
+                documentViewer.style.display = 'block';
+                documentTitle.textContent = lesson.title;
+                documentLink.href = lesson.url;
             }
             
             // Highlight selected lesson
@@ -431,6 +281,9 @@
                 item.classList.remove('active');
             });
             document.querySelector(`.lesson-item[data-lesson-index="${index}"]`).classList.add('active');
+            
+            // Update lesson counter
+            document.getElementById('lesson-counter').textContent = `${index + 1}/${totalLessons} lessons`;
         }
         
         // Mark lesson as done
@@ -461,33 +314,23 @@
             
             // Save to localStorage
             localStorage.setItem(`completedLessons_${courseId}`, JSON.stringify(completedLessons));
+            
+            // Update UI elements
+            document.getElementById('completed-count').textContent = completedLessons.length;
+            updateProgress(document.querySelectorAll('.lesson-item').length, completedLessons.length);
         }
         
-        // Enroll in a course
-        function enrollInCourse(courseId) {
-            // Check if user has already provided their name
-            let userName = localStorage.getItem('userName');
-            
-            if (!userName) {
-                userName = prompt('Please enter your name to enroll in this course:');
-                if (!userName) return;
-                localStorage.setItem('userName', userName);
+        // Update progress bar
+        function updateProgress(totalLessons, completedLessons) {
+            const progressPercentage = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
+            document.getElementById('progress-fill').style.width = `${progressPercentage}%`;
+        }
+        
+        // Enroll in course from page
+        function enrollInCourseFromPage() {
+            if (currentCourseData && currentCourseData.id) {
+                enrollInCourse(currentCourseData.id);
             }
-            
-            // Get current enrollments
-            let enrollments = JSON.parse(localStorage.getItem('enrollments') || '[]');
-            
-            // Add course to enrollments if not already enrolled
-            if (!enrollments.includes(courseId)) {
-                enrollments.push(courseId);
-                localStorage.setItem('enrollments', JSON.stringify(enrollments));
-                alert(`Successfully enrolled in the course! Welcome, ${userName}!`);
-            } else {
-                alert(`You are already enrolled in this course, ${userName}!`);
-            }
-            
-            // Redirect to course page
-            window.location.href = `course.html?course=${courseId}`;
         }
     </script>
 </body>

@@ -46,35 +46,7 @@ const coursesIndexData = [
 ];
 
 // Course Detail Data
-const webdevCourseData = {
-    "id": "webdev",
-    "title": "Full Stack Web Development",
-    "lessons": [
-        { "title": "HTML Basics", "type": "video", "url": "https://www.youtube.com/embed/hQVTIJBZook" },
-        { "title": "CSS Layouts", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
-        { "title": "JavaScript Fundamentals", "type": "video", "url": "https://www.youtube.com/embed/W6NZfCO5SIk" },
-        { "title": "DOM Manipulation", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" },
-        { "title": "Backend with Node.js", "type": "video", "url": "https://www.youtube.com/embed/TlB_eWDSMt4" }
-    ]
-};
 
-const pythonCourseData = {
-    "id": "python",
-    "title": "Python for Everyone",
-    "lessons": [
-        { "title": "Python Introduction", "type": "video", "url": "https://www.youtube.com/embed/rfscVS0vtbw" },
-        { "title": "Variables and Data Types", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
-        { "title": "Control Structures", "type": "video", "url": "https://www.youtube.com/embed/4OCd7Je12II" },
-        { "title": "Functions and Modules", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" }
-    ]
-};
 
-const designCourseData = {
-    "id": "design",
-    "title": "UI/UX Design Fundamentals",
-    "lessons": [
-        { "title": "Design Principles", "type": "video", "url": "https://www.youtube.com/embed/QeTbD3XEjhI" },
-        { "title": "Color Theory", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
-        { "title": "Typography Basics", "type": "video", "url": "https://www.youtube.com/embed/sByzHoiYFX0" }
-    ]
-};
+
+
