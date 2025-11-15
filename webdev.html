@@ -136,104 +136,99 @@
         
         // Load course details
         function loadCourseDetails() {
-            const courseData = {
-                "id": "webdev",
-                "title": "Full Stack Web Development",
-                "lessons": [
-                    { "title": "HTML Basics", "type": "video", "url": "https://www.youtube.com/embed/hQVTIJBZook" },
-                    { "title": "CSS Layouts", "type": "doc", "url": "https://docs.google.com/document/d/1uWDPhFdwGxJioi5DkEGRQpXyJUQqvjZF/edit" },
-                    { "title": "JavaScript Fundamentals", "type": "video", "url": "https://www.youtube.com/embed/W6NZfCO5SIk" },
-                    { "title": "DOM Manipulation", "type": "doc", "url": "https://docs.google.com/document/d/1W9VPUi5aN0_gb1NfjBbYlhkNMiuziO2_/edit" },
-                    { "title": "Backend with Node.js", "type": "video", "url": "https://www.youtube.com/embed/TlB_eWDSMt4" }
-                ]
-            };
-            
-            // Update course title in player
-            document.getElementById('player-course-title').textContent = courseData.title;
-            
-            // Update total lesson count
-            document.getElementById('total-count').textContent = courseData.lessons.length;
-            
-            // Load topics and lessons
-            const lessonsList = document.getElementById('lessons-list');
-            lessonsList.innerHTML = '';
-            
-            // Get completed lessons from localStorage
-            const completedLessons = JSON.parse(localStorage.getItem(`completedLessons_${courseData.id}`) || '[]');
-            
-            // Calculate total lessons
-            let totalLessons = 0;
-            courseData.topics.forEach(topic => {
-                totalLessons += topic.lessons.length;
-            });
-            
-            // Update completed count
-            document.getElementById('completed-count').textContent = completedLessons.length;
-            
-            // Update progress bar
-            updateProgress(totalLessons, completedLessons.length);
-            
-            // Create a flat list of all lessons with their topic info
-            let allLessons = [];
-            courseData.topics.forEach((topic, topicIndex) => {
-                topic.lessons.forEach((lesson, lessonIndex) => {
-                    allLessons.push({
-                        ...lesson,
-                        topicTitle: topic.title,
-                        topicIndex: topicIndex,
-                        lessonIndex: lessonIndex,
-                        globalIndex: allLessons.length
-                    });
-                });
-            });
-            
-            // Add topics and lessons to the UI
-            courseData.topics.forEach((topic, topicIndex) => {
-                // Create topic header
-                const topicElement = document.createElement('div');
-                topicElement.className = 'topic-header';
-                topicElement.innerHTML = `
-                    <h3 class="topic-title">${topic.title}</h3>
-                `;
-                lessonsList.appendChild(topicElement);
-                
-                // Add lessons for this topic
-                topic.lessons.forEach((lesson, lessonIndex) => {
-                    const globalIndex = allLessons.findIndex(l => 
-                        l.topicIndex === topicIndex && l.lessonIndex === lessonIndex);
+            // Fetch course data from JSON file
+            fetch('courses/webdev.json')
+                .then(response => response.json())
+                .then(courseData => {
+                    // Update course title in player
+                    document.getElementById('player-course-title').textContent = courseData.title;
+                    document.getElementById('course-title').textContent = courseData.title;
                     
-                    const lessonElement = document.createElement('div');
-                    lessonElement.className = 'lesson-item';
-                    lessonElement.setAttribute('data-lesson-index', globalIndex);
+                    // Load topics and lessons
+                    const lessonsList = document.getElementById('lessons-list');
+                    lessonsList.innerHTML = '';
                     
-                    // Check if lesson is completed
-                    const isCompleted = completedLessons.includes(globalIndex);
-                    const completedClass = isCompleted ? 'completed' : '';
-                    const completedText = isCompleted ? 'Completed' : 'Mark as Done';
+                    // Get completed lessons from localStorage
+                    const completedLessons = JSON.parse(localStorage.getItem(`completedLessons_${courseData.id}`) || '[]');
                     
-                    lessonElement.innerHTML = `
-                        <div class="lesson-info ${completedClass}">
-                            <div class="lesson-index">${lessonIndex + 1}</div>
-                            <div class="lesson-details">
-                                <div class="lesson-title">${lesson.title}</div>
-                                <div class="lesson-type">${lesson.type === 'video' ? 'Video Lesson' : 'Document Lesson'}</div>
-                            </div>
-                        </div>
-                        <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseData.id}', ${globalIndex}, this)">
-                            ${completedText}
-                        </button>
-                    `;
-                    
-                    // Add click event to load lesson
-                    lessonElement.addEventListener('click', function(e) {
-                        if (!e.target.classList.contains('btn-mark')) {
-                            loadLesson(lesson, globalIndex, totalLessons);
-                        }
+                    // Calculate total lessons
+                    let totalLessons = 0;
+                    courseData.topics.forEach(topic => {
+                        totalLessons += topic.lessons.length;
                     });
                     
-                    lessonsList.appendChild(lessonElement);
+                    // Update completed count
+                    document.getElementById('completed-count').textContent = completedLessons.length;
+                    document.getElementById('total-count').textContent = totalLessons;
+                    
+                    // Update progress bar
+                    updateProgress(totalLessons, completedLessons.length);
+                    
+                    // Create a flat list of all lessons with their topic info
+                    let allLessons = [];
+                    courseData.topics.forEach((topic, topicIndex) => {
+                        topic.lessons.forEach((lesson, lessonIndex) => {
+                            allLessons.push({
+                                ...lesson,
+                                topicTitle: topic.title,
+                                topicIndex: topicIndex,
+                                lessonIndex: lessonIndex,
+                                globalIndex: allLessons.length
+                            });
+                        });
+                    });
+                    
+                    // Add topics and lessons to the UI
+                    courseData.topics.forEach((topic, topicIndex) => {
+                        // Create topic header
+                        const topicElement = document.createElement('div');
+                        topicElement.className = 'topic-header';
+                        topicElement.innerHTML = `
+                            <h3 class="topic-title">${topic.title}</h3>
+                        `;
+                        lessonsList.appendChild(topicElement);
+                        
+                        // Add lessons for this topic
+                        topic.lessons.forEach((lesson, lessonIndex) => {
+                            const globalIndex = allLessons.findIndex(l => 
+                                l.topicIndex === topicIndex && l.lessonIndex === lessonIndex);
+                            
+                            const lessonElement = document.createElement('div');
+                            lessonElement.className = 'lesson-item';
+                            lessonElement.setAttribute('data-lesson-index', globalIndex);
+                            
+                            // Check if lesson is completed
+                            const isCompleted = completedLessons.includes(globalIndex);
+                            const completedClass = isCompleted ? 'completed' : '';
+                            const completedText = isCompleted ? 'Completed' : 'Mark as Done';
+                            
+                            lessonElement.innerHTML = `
+                                <div class="lesson-info ${completedClass}">
+                                    <div class="lesson-index">${lessonIndex + 1}</div>
+                                    <div class="lesson-details">
+                                        <div class="lesson-title">${lesson.title}</div>
+                                        <div class="lesson-type">${lesson.type === 'video' ? 'Video Lesson' : 'Document Lesson'}</div>
+                                    </div>
+                                </div>
+                                <button class="btn-mark ${isCompleted ? 'completed' : ''}" onclick="markLessonAsDone('${courseData.id}', ${globalIndex}, this)">
+                                    ${completedText}
+                                </button>
+                            `;
+                            
+                            // Add click event to load lesson
+                            lessonElement.addEventListener('click', function(e) {
+                                if (!e.target.classList.contains('btn-mark')) {
+                                    loadLesson(lesson, globalIndex, totalLessons);
+                                }
+                            });
+                            
+                            lessonsList.appendChild(lessonElement);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading course data:', error);
                 });
-            });
         }
         
         // Load lesson in player
