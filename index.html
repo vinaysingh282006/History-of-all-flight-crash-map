@@ -467,30 +467,33 @@
                 })
                 .catch(error => {
                     console.error('Error loading reviews:', error);
-                    // Fallback to hardcoded data from data.js
-                    if (typeof reviewsData !== 'undefined') {
-                        reviewsList.innerHTML = '';
-                        reviewsData.forEach(review => {
-                            const reviewCard = document.createElement('div');
-                            reviewCard.className = 'testimonial-card animate-slide-up';
-                            
-                            // Create star rating
-                            let stars = '';
-                            for (let i = 0; i < 5; i++) {
-                                stars += i < review.rating ? '★' : '☆';
-                            }
-                            
-                            reviewCard.innerHTML = `
-                                <div class="rating">${stars}</div>
-                                <p>"${review.comment}"</p>
-                                <div class="testimonial-author">
-                                    <span class="author-name">— ${review.name}</span>
-                                </div>
-                            `;
-                            
-                            reviewsList.appendChild(reviewCard);
-                        });
-                    }
+                    // Fallback to hardcoded data
+                    const reviewsData = [
+                        { "name": "Riya", "comment": "Loved the free learning experience! The courses are well-curated and easy to follow.", "rating": 5 },
+                        { "name": "Karan", "comment": "Simple and clean interface. I was able to learn Python without any distractions.", "rating": 4 },
+                        { "name": "Priya", "comment": "The web development course helped me land my first internship. Highly recommended!", "rating": 5 },
+                        { "name": "Arjun", "comment": "Great platform for beginners. The course materials are top-notch.", "rating": 4 }
+                    ];
+                    reviewsData.forEach(review => {
+                        const reviewCard = document.createElement('div');
+                        reviewCard.className = 'testimonial-card animate-slide-up';
+                        
+                        // Create star rating
+                        let stars = '';
+                        for (let i = 0; i < 5; i++) {
+                            stars += i < review.rating ? '★' : '☆';
+                        }
+                        
+                        reviewCard.innerHTML = `
+                            <div class="rating">${stars}</div>
+                            <p>"${review.comment}"</p>
+                            <div class="testimonial-author">
+                                <span class="author-name">— ${review.name}</span>
+                            </div>
+                        `;
+                        
+                        reviewsList.appendChild(reviewCard);
+                    });
                 });
         }
         
@@ -533,25 +536,27 @@
                 })
                 .catch(error => {
                     console.error('Error loading FAQ:', error);
-                    // Fallback to hardcoded data from data.js
-                    if (typeof faqData !== 'undefined') {
-                        faqList.innerHTML = '';
-                        faqData.forEach(faq => {
-                            const faqItem = document.createElement('div');
-                            faqItem.className = 'faq-item';
-                            
-                            faqItem.innerHTML = `
-                                <div class="faq-question">
-                                    <span>${faq.q}</span>
-                                    <span class="faq-toggle">+</span>
-                                </div>
-                                <div class="faq-answer">
-                                    <p>${faq.a}</p>
-                                </div>
-                            `;
-                            
-                            faqList.appendChild(faqItem);
-                        });
+                    // Fallback to hardcoded data
+                    const faqData = [
+                        { "q": "Is FreeSkillz really free?", "a": "Yes, all courses are 100% free to access." },
+                        { "q": "Do I get a certificate?", "a": "Yes, you can download your certificate after completing a course." },
+                        { "q": "Do I need to create an account?", "a": "No, you can enroll in courses without creating an account. Your data is stored locally in your browser." },
+                        { "q": "What kind of courses are offered?", "a": "We offer courses in Web Development, Programming, Design, and more. All courses are curated from high-quality free resources." },
+                        { "q": "Can I access courses offline?", "a": "Courses that are videos can be downloaded for offline viewing. Document-based courses require internet access." }
+                    ];
+                    faqData.forEach(faq => {
+                        const faqItem = document.createElement('div');
+                        faqItem.className = 'faq-item';
+                        
+                        faqItem.innerHTML = `
+                            <div class="faq-question">
+                                <span>${faq.q}</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <p>${faq.a}</p>
+                            </div>
+                        `;
                         
                         // Add event listeners to FAQ questions
                         document.querySelectorAll('.faq-question').forEach(question => {
