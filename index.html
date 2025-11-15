@@ -467,27 +467,30 @@
                 })
                 .catch(error => {
                     console.error('Error loading reviews:', error);
-                    // Fallback to hardcoded data
-                    reviewsData.forEach(review => {
-                        const reviewCard = document.createElement('div');
-                        reviewCard.className = 'testimonial-card animate-slide-up';
-                        
-                        // Create star rating
-                        let stars = '';
-                        for (let i = 0; i < 5; i++) {
-                            stars += i < review.rating ? '★' : '☆';
-                        }
-                        
-                        reviewCard.innerHTML = `
-                            <div class="rating">${stars}</div>
-                            <p>"${review.comment}"</p>
-                            <div class="testimonial-author">
-                                <span class="author-name">— ${review.name}</span>
-                            </div>
-                        `;
-                        
-                        reviewsList.appendChild(reviewCard);
-                    });
+                    // Fallback to hardcoded data from data.js
+                    if (typeof reviewsData !== 'undefined') {
+                        reviewsList.innerHTML = '';
+                        reviewsData.forEach(review => {
+                            const reviewCard = document.createElement('div');
+                            reviewCard.className = 'testimonial-card animate-slide-up';
+                            
+                            // Create star rating
+                            let stars = '';
+                            for (let i = 0; i < 5; i++) {
+                                stars += i < review.rating ? '★' : '☆';
+                            }
+                            
+                            reviewCard.innerHTML = `
+                                <div class="rating">${stars}</div>
+                                <p>"${review.comment}"</p>
+                                <div class="testimonial-author">
+                                    <span class="author-name">— ${review.name}</span>
+                                </div>
+                            `;
+                            
+                            reviewsList.appendChild(reviewCard);
+                        });
+                    }
                 });
         }
         
@@ -530,40 +533,41 @@
                 })
                 .catch(error => {
                     console.error('Error loading FAQ:', error);
-                    // Fallback to hardcoded data
-                    faqData.forEach(faq => {
-                        const faqItem = document.createElement('div');
-                        faqItem.className = 'faq-item';
-                        
-                        faqItem.innerHTML = `
-                            <div class="faq-question">
-                                <span>${faq.q}</span>
-                                <span class="faq-toggle">+</span>
-                            </div>
-                            <div class="faq-answer">
-                                <p>${faq.a}</p>
-                            </div>
-                        `;
-                        
-                        faqList.appendChild(faqItem);
-                    });
-                    
-                    // Add event listeners to FAQ questions
-                    document.querySelectorAll('.faq-question').forEach(question => {
-                        question.addEventListener('click', function() {
-                            this.classList.toggle('active');
-                            const answer = this.nextElementSibling;
-                            answer.classList.toggle('open');
+                    // Fallback to hardcoded data from data.js
+                    if (typeof faqData !== 'undefined') {
+                        faqList.innerHTML = '';
+                        faqData.forEach(faq => {
+                            const faqItem = document.createElement('div');
+                            faqItem.className = 'faq-item';
+                            
+                            faqItem.innerHTML = `
+                                <div class="faq-question">
+                                    <span>${faq.q}</span>
+                                    <span class="faq-toggle">+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>${faq.a}</p>
+                                </div>
+                            `;
+                            
+                            faqList.appendChild(faqItem);
                         });
-                    });
+                        
+                        // Add event listeners to FAQ questions
+                        document.querySelectorAll('.faq-question').forEach(question => {
+                            question.addEventListener('click', function() {
+                                this.classList.toggle('active');
+                                const answer = this.nextElementSibling;
+                                answer.classList.toggle('open');
+                            });
+                        });
+                    }
                 });
         }
         
         // Load courses dynamically
         function loadCourses() {
             const coursesGrid = document.getElementById('courses-grid');
-            const searchInput = document.getElementById('search-input');
-            const categoryFilter = document.getElementById('category-filter');
             
             if (!coursesGrid) return;
             
@@ -573,23 +577,21 @@
                 .then(coursesData => {
                     // Display all courses initially
                     displayCourses(coursesData);
-                    
-                    // Set up search and filter event listeners
-                    searchInput.addEventListener('input', () => filterCourses(coursesData));
-                    categoryFilter.addEventListener('change', () => filterCourses(coursesData));
                 })
                 .catch(error => {
                     console.error('Error loading courses:', error);
-                    // Fallback to hardcoded data
-                    displayCourses(coursesIndexData);
-                    searchInput.addEventListener('input', () => filterCourses(coursesIndexData));
-                    categoryFilter.addEventListener('change', () => filterCourses(coursesIndexData));
+                    // Fallback to hardcoded data from data.js
+                    if (typeof coursesIndexData !== 'undefined') {
+                        displayCourses(coursesIndexData);
+                    }
                 });
         }
         
         // Display courses in the grid
         function displayCourses(courses) {
             const coursesGrid = document.getElementById('courses-grid');
+            if (!coursesGrid) return;
+            
             coursesGrid.innerHTML = '';
             
             if (courses.length === 0) {
@@ -640,8 +642,13 @@
         
         // Filter courses based on search and category
         function filterCourses(allCourses) {
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            const category = document.getElementById('category-filter').value;
+            const searchTerm = document.getElementById('search-input')?.value.toLowerCase() || '';
+            const category = document.getElementById('category-filter')?.value || 'all';
+            
+            if (!allCourses) {
+                console.error('No courses data provided to filter');
+                return;
+            }
             
             const filteredCourses = allCourses.filter(course => {
                 const matchesSearch = course.title.toLowerCase().includes(searchTerm) || 
@@ -659,6 +666,49 @@
             const contactForm = document.querySelector('.contact-form');
             if (contactForm) {
                 contactForm.addEventListener('submit', submitContactForm);
+            }
+            
+            // Set up search and filter event listeners if elements exist
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            const coursesGrid = document.getElementById('courses-grid');
+            
+            if (searchInput && categoryFilter && coursesGrid) {
+                // Load courses first
+                loadCourses();
+                
+                // Then set up event listeners
+                searchInput.addEventListener('input', function() {
+                    // We need to get fresh course data for filtering
+                    fetch('courses/index.json')
+                        .then(response => response.json())
+                        .then(coursesData => {
+                            filterCourses(coursesData);
+                        })
+                        .catch(error => {
+                            console.error('Error loading courses for filtering:', error);
+                            // Fallback to hardcoded data
+                            if (typeof coursesIndexData !== 'undefined') {
+                                filterCourses(coursesIndexData);
+                            }
+                        });
+                });
+                
+                categoryFilter.addEventListener('change', function() {
+                    // We need to get fresh course data for filtering
+                    fetch('courses/index.json')
+                        .then(response => response.json())
+                        .then(coursesData => {
+                            filterCourses(coursesData);
+                        })
+                        .catch(error => {
+                            console.error('Error loading courses for filtering:', error);
+                            // Fallback to hardcoded data
+                            if (typeof coursesIndexData !== 'undefined') {
+                                filterCourses(coursesIndexData);
+                            }
+                        });
+                });
             }
         }
         

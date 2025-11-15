@@ -164,23 +164,28 @@
                     console.error('Error loading course:', error);
                     // Fallback to hardcoded data
                     let fallbackData = null;
-                    switch(courseId) {
-                        case 'webdev':
-                            fallbackData = webdevCourseData;
-                            break;
-                        case 'python':
-                            fallbackData = pythonCourseData;
-                            break;
-                        case 'design':
-                            fallbackData = designCourseData;
-                            break;
-                        default:
-                            // Redirect to home if course not found
-                            window.location.href = 'index.html';
-                            return;
+                    if (typeof window !== 'undefined') {
+                        switch(courseId) {
+                            case 'webdev':
+                                fallbackData = window.webdevCourseData || null;
+                                break;
+                            case 'python':
+                                fallbackData = window.pythonCourseData || null;
+                                break;
+                            case 'design':
+                                fallbackData = window.designCourseData || null;
+                                break;
+                        }
                     }
-                    currentCourseData = fallbackData;
-                    displayCourseDetails(fallbackData);
+                    
+                    if (fallbackData) {
+                        currentCourseData = fallbackData;
+                        displayCourseDetails(fallbackData);
+                    } else {
+                        // Redirect to home if course not found and no fallback available
+                        alert('Course not found. Redirecting to home page.');
+                        window.location.href = 'index.html';
+                    }
                 });
         }
         
