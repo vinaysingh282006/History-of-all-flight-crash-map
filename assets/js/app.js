@@ -154,3 +154,39 @@ function clearProfile() {
         location.reload();
     }
 }
+
+// Load course details from JSON (updated to handle nested topics structure)
+function loadCourseDetails(courseId) {
+    // Fetch course data from JSON file
+    return fetch(`courses/${courseId}.json`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Course not found');
+            }
+            return response.json();
+        })
+        .then(courseData => {
+            // Process the course data to ensure it has the correct structure
+            if (courseData.topics) {
+                // Already has topics structure, return as is
+                return courseData;
+            } else if (courseData.lessons) {
+                // Convert flat lessons structure to topics structure
+                return {
+                    ...courseData,
+                    topics: [
+                        {
+                            title: "Course Content",
+                            lessons: courseData.lessons
+                        }
+                    ]
+                };
+            } else {
+                // No lessons or topics, return empty structure
+                return {
+                    ...courseData,
+                    topics: []
+                };
+            }
+        });
+}
