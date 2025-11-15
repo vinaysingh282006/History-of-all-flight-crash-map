@@ -242,45 +242,50 @@
                 })
                 .catch(error => {
                     console.error('Error loading courses index:', error);
-                    // Fallback to hardcoded data
-                    const enrolledCourses = coursesIndexData.filter(course => 
-                        enrollments.includes(course.id)
-                    );
-                    
-                    enrolledCoursesList.innerHTML = '';
-                    enrolledCourses.forEach(course => {
-                        const courseElement = document.createElement('div');
-                        courseElement.className = 'profile-course-card-modern animate-slide-up';
+                    // Fallback to hardcoded data from data.js
+                    if (typeof coursesIndexData !== 'undefined') {
+                        // Filter courses that user is enrolled in
+                        const enrolledCourses = coursesIndexData.filter(course => 
+                            enrollments.includes(course.id)
+                        );
                         
-                        // Determine the course page URL based on course ID
-                        let coursePageUrl = `course.html?course=${course.id}`;
-                        
-                        // Check if course is popular
-                        const isPopular = course.id === 'webdev' || course.id === 'python';
-                        
-                        courseElement.innerHTML = `
-                            <div class="course-image-modern">
-                                <img src="${course.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'}" alt="${course.title}">
-                                ${isPopular ? '<div class="premium-badge-modern">Popular</div>' : ''}
-                            </div>
-                            <div class="course-content-modern">
-                                <h3>${course.title}</h3>
-                                <p>${course.description}</p>
-                                <div class="course-meta-modern">
-                                    <span class="course-category-modern">${course.category}</span>
-                                    <span class="course-level-modern">${course.level}</span>
+                        enrolledCoursesList.innerHTML = '';
+                        enrolledCourses.forEach(course => {
+                            const courseElement = document.createElement('div');
+                            courseElement.className = 'profile-course-card-modern animate-slide-up';
+                            
+                            // Determine the course page URL based on course ID
+                            let coursePageUrl = `course.html?course=${course.id}`;
+                            
+                            // Check if course is popular
+                            const isPopular = course.id === 'webdev' || course.id === 'python';
+                            
+                            courseElement.innerHTML = `
+                                <div class="course-image-modern">
+                                    <img src="${course.image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'}" alt="${course.title}">
+                                    ${isPopular ? '<div class="premium-badge-modern">Popular</div>' : ''}
                                 </div>
-                                <div class="course-progress-modern">
-                                    <div class="progress-bar-modern">
-                                        <div class="progress-fill-modern" style="width: ${Math.floor(Math.random() * 100)}%"></div>
+                                <div class="course-content-modern">
+                                    <h3>${course.title}</h3>
+                                    <p>${course.description}</p>
+                                    <div class="course-meta-modern">
+                                        <span class="course-category-modern">${course.category}</span>
+                                        <span class="course-level-modern">${course.level}</span>
                                     </div>
-                                    <span class="progress-text-modern">${Math.floor(Math.random() * 100)}% complete</span>
+                                    <div class="course-progress-modern">
+                                        <div class="progress-bar-modern">
+                                            <div class="progress-fill-modern" style="width: ${Math.floor(Math.random() * 100)}%"></div>
+                                        </div>
+                                        <span class="progress-text-modern">${Math.floor(Math.random() * 100)}% complete</span>
+                                    </div>
+                                    <button class="btn-modern btn-primary-modern" onclick="window.location.href='${coursePageUrl}'">Continue Learning</button>
                                 </div>
-                                <button class="btn-modern btn-primary-modern" onclick="window.location.href='${coursePageUrl}'">Continue Learning</button>
-                            </div>
-                        `;
-                        enrolledCoursesList.appendChild(courseElement);
-                    });
+                            `;
+                            enrolledCoursesList.appendChild(courseElement);
+                        });
+                    } else {
+                        enrolledCoursesList.innerHTML = '<p>Error loading course data. Please try again later.</p>';
+                    }
                 });
         }
     </script>
