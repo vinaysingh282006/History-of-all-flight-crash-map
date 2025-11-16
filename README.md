@@ -1,4 +1,3 @@
-
 # ✨ Contributors
 
 #### Thanks to all the wonderful contributors 💖
